@@ -9,65 +9,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Görüntüleme Sorununu Çözen Markdown Kütüphanesi -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <style>
-        body {
-            font-family: 'Space Grotesk', sans-serif;
-            background: #f8fafc;
-            color: #0f172a;
-            scroll-behavior: smooth;
-        }
-
-        .glass {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(16, 185, 129, 0.1);
-        }
-
-        .gradient-text {
-            background: linear-gradient(135deg, #059669, #06b6d4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .math-pattern {
-            background-image: radial-gradient(#10b981 0.5px, transparent 0.5px);
-            background-size: 24px 24px;
-        }
-
-        .nav-link {
-            position: relative;
-            transition: all 0.3s;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #10b981;
-            transition: width 0.3s;
-        }
-
-        .nav-link:hover::after { width: 100%; }
-
-        .btn-modern {
-            background: #10b981;
-            color: white;
-            transition: all 0.3s;
-            box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.39);
-        }
-
-        .btn-modern:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
-        }
-
-        .post-card:hover {
-            transform: translateY(-8px);
-        }
+        body { font-family: 'Space Grotesk', sans-serif; background: #f8fafc; color: #0f172a; scroll-behavior: smooth; }
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(16, 185, 129, 0.1); }
+        .gradient-text { background: linear-gradient(135deg, #059669, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .math-pattern { background-image: radial-gradient(#10b981 0.5px, transparent 0.5px); background-size: 24px 24px; }
+        .btn-modern { background: #10b981; color: white; transition: all 0.3s; box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.39); }
+        .btn-modern:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45); }
+        
+        /* Markdown İçerik Stilleri */
+        #post-render-area h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem; }
+        #post-render-area h2 { font-size: 2rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; color: #059669; }
+        #post-render-area p { margin-bottom: 1.25rem; line-height: 1.8; }
+        #post-render-area ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem; }
+        #post-render-area li { margin-bottom: 0.5rem; }
+        #post-render-area strong { color: #064e3b; font-weight: 700; }
     </style>
 </head>
 <body class="math-pattern">
@@ -76,313 +36,223 @@
     <nav class="sticky top-0 z-[100] glass border-b">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <div class="flex items-center gap-2 cursor-pointer" onclick="showPage('home')">
-                <span class="text-2xl font-black tracking-tighter">MATOTA<span class="text-emerald-500 font-light">|</span>BLOG</span>
+                <span class="text-2xl font-black tracking-tighter uppercase">MATOTA<span class="text-emerald-500 font-light">|</span>BLOG</span>
             </div>
-            
             <div class="hidden md:flex items-center gap-8 font-semibold">
-                <a href="#home" onclick="showPage('home')" class="nav-link">Anasayfa</a>
-                <a href="#blogs" onclick="showPage('blogs')" class="nav-link">Yazılar</a>
-                <a href="#files" onclick="showPage('files')" class="nav-link">Dosyalar</a>
+                <button onclick="showPage('home')" class="hover:text-emerald-600 transition">Anasayfa</button>
+                <button onclick="showPage('blogs')" class="hover:text-emerald-600 transition">Yazılar</button>
+                <button onclick="showPage('files')" class="hover:text-emerald-600 transition">Dosyalar</button>
             </div>
-
-            <div id="auth-ui" class="flex items-center gap-3">
-                <button onclick="showPage('login')" class="px-5 py-2 rounded-full font-bold border border-emerald-500 text-emerald-600 hover:bg-emerald-50 transition">Giriş</button>
-            </div>
+            <div id="auth-ui" class="flex items-center gap-3"></div>
         </div>
     </nav>
 
-    <!-- Cookie Banner -->
-    <div id="cookie-banner" class="fixed bottom-0 left-0 right-0 z-[200] p-4 bg-gray-900/95 text-white transform translate-y-full transition-transform duration-500">
-        <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-            <p class="text-sm opacity-80 text-center md:text-left">Deneyiminizi geliştirmek için çerezleri kullanıyoruz. <a href="#" class="underline">Gizlilik Sözleşmesi</a>'ni inceleyebilirsiniz.</p>
-            <button onclick="acceptCookies()" class="px-8 py-2 bg-emerald-500 rounded-full font-bold text-sm">Anladım</button>
-        </div>
-    </div>
-
-    <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-6 py-12">
-        
-        <!-- Ana Sayfa -->
-        <div id="page-home" class="space-y-24">
-            <section class="flex flex-col md:flex-row items-center gap-12 py-12">
+        <div id="page-home" class="space-y-12">
+             <section class="flex flex-col md:flex-row items-center gap-12 py-12">
                 <div class="flex-1 space-y-8">
-                    <span class="px-4 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold tracking-widest uppercase">Hoş Geldiniz</span>
                     <h1 class="text-6xl md:text-8xl font-black text-slate-900 leading-tight">Zihnini <br> <span class="gradient-text">Matematikle</span> <br> Eğit.</h1>
-                    <p class="text-xl text-slate-600 max-w-lg">Ortaokul matematik dünyasına dair en güncel içerikler, kaynak dosyalar ve çok daha fazlası burada.</p>
-                    <div class="flex gap-4">
-                        <button onclick="showPage('blogs')" class="btn-modern px-8 py-4 rounded-2xl font-bold">Yazıları Keşfet</button>
-                        <button onclick="showPage('files')" class="px-8 py-4 rounded-2xl font-bold bg-white border border-slate-200">Kaynaklar</button>
-                    </div>
-                </div>
-                <div class="flex-1 relative">
-                    <div class="w-full aspect-square bg-emerald-500/10 rounded-[3rem] rotate-6 absolute inset-0 -z-10"></div>
-                    <div class="w-full aspect-square glass rounded-[3rem] flex items-center justify-center text-8xl shadow-2xl">
-                         <i class="fa-solid fa-square-root-variable text-emerald-500"></i>
-                    </div>
+                    <p class="text-xl text-slate-600">Her gün yeni bir mantık sorusu, her hafta yeni bir konu özeti.</p>
+                    <button onclick="showPage('blogs')" class="btn-modern px-8 py-4 rounded-2xl font-bold text-lg">Keşfetmeye Başla</button>
                 </div>
             </section>
-
-            <!-- Son Yazılar Preview -->
-            <section>
-                <div class="flex items-center justify-between mb-12">
-                    <h2 class="text-3xl font-bold">Son Paylaşımlar</h2>
-                    <button onclick="showPage('blogs')" class="text-emerald-600 font-bold">Tümünü Gör →</button>
-                </div>
-                <div id="latest-posts" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- JS ile dolacak -->
-                </div>
-            </section>
+            <div id="latest-posts" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
         </div>
 
-        <!-- Yazılar Sayfası -->
-        <div id="page-blogs" class="hidden space-y-12">
-            <div class="text-center space-y-4">
-                <h2 class="text-4xl font-black">Blog Arşivi</h2>
-                <div class="max-w-xl mx-auto relative">
-                    <input type="text" placeholder="Yazı ara..." class="w-full p-4 rounded-2xl border bg-white focus:ring-2 focus:ring-emerald-500 outline-none pl-12">
-                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                </div>
-            </div>
-            <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        <div id="page-blogs" class="hidden">
+            <h2 class="text-4xl font-black mb-12 text-center">Tüm Paylaşımlar</h2>
+            <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
         </div>
 
-        <!-- Dosyalar Sayfası -->
-        <div id="page-files" class="hidden space-y-12">
-            <h2 class="text-4xl font-black text-center">Eğitim Kaynakları</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="files-list">
-                <!-- JS ile dolacak -->
-            </div>
+        <div id="page-files" class="hidden">
+             <h2 class="text-4xl font-black mb-12 text-center">Dosya Arşivi</h2>
+             <div id="files-list" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
         </div>
 
-        <!-- Yazı Detay -->
         <div id="page-post-detail" class="hidden max-w-4xl mx-auto">
-            <div id="post-detail-content"></div>
+            <button onclick="showPage('blogs')" class="mb-8 font-bold text-emerald-600 flex items-center gap-2"><i class="fa-solid fa-arrow-left"></i> Yazılara Dön</button>
+            <article class="bg-white p-8 md:p-16 rounded-[3rem] border shadow-sm">
+                <!-- Render Area -->
+                <div id="post-render-area" class="text-lg text-slate-700 leading-relaxed"></div>
+                
+                <div class="flex gap-4 pt-12 mt-12 border-t" id="post-actions"></div>
+            </article>
+
+            <div class="mt-12 glass p-8 rounded-[2.5rem] border shadow-sm">
+                <h3 class="text-2xl font-bold mb-6">Yorumlar</h3>
+                <div id="comments-list" class="space-y-4 mb-8"></div>
+                <div id="comment-form">
+                    <textarea id="comment-text" placeholder="Bu yazı hakkında ne düşünüyorsun?" class="w-full p-4 rounded-2xl border outline-none focus:ring-2 focus:ring-emerald-500 resize-none"></textarea>
+                    <button onclick="sendComment()" class="mt-4 btn-modern px-6 py-3 rounded-xl font-bold">Yorumunu Paylaş</button>
+                </div>
+            </div>
         </div>
 
-        <!-- Giriş / Kayıt -->
-        <div id="page-login" class="hidden max-w-md mx-auto py-20">
-            <div class="glass p-10 rounded-[2rem] space-y-6 shadow-xl">
+        <!-- Auth Pages (Login/Register) -->
+        <div id="page-login" class="hidden max-w-md mx-auto py-12">
+            <div class="glass p-10 rounded-[2.5rem] shadow-xl space-y-8">
                 <div id="login-box">
                     <h2 class="text-3xl font-black mb-6">Giriş Yap</h2>
                     <form id="login-form" class="space-y-4">
-                        <input type="email" id="login-email" placeholder="E-posta" required class="w-full p-4 rounded-xl border border-slate-200 outline-none">
-                        <input type="password" id="login-password" placeholder="Şifre" required class="w-full p-4 rounded-xl border border-slate-200 outline-none">
-                        <button type="submit" class="w-full btn-modern p-4 rounded-xl font-bold">Giriş Yap</button>
+                        <input type="email" id="l-email" placeholder="E-posta" required class="w-full p-4 rounded-xl border">
+                        <input type="password" id="l-password" placeholder="Şifre" required class="w-full p-4 rounded-xl border">
+                        <button type="submit" class="w-full btn-modern p-4 rounded-xl font-bold">Devam Et</button>
                     </form>
-                    <p class="mt-4 text-center text-sm">Hesabın yok mu? <button onclick="toggleAuthBox()" class="text-emerald-600 font-bold">Kayıt Ol</button></p>
+                    <p class="mt-4 text-center text-sm">Hesabın yok mu? <button onclick="toggleAuth()" class="text-emerald-600 font-bold">Kayıt Ol</button></p>
                 </div>
-                <div id="register-box" class="hidden">
-                    <h2 class="text-3xl font-black mb-6">Hesap Oluştur</h2>
-                    <form id="register-form" class="space-y-4">
-                        <input type="text" id="reg-name" placeholder="Ad Soyad" required class="w-full p-4 rounded-xl border border-slate-200 outline-none">
-                        <input type="email" id="reg-email" placeholder="E-posta" required class="w-full p-4 rounded-xl border border-slate-200 outline-none">
-                        <input type="password" id="reg-password" placeholder="Şifre (Min. 6 Karakter)" required class="w-full p-4 rounded-xl border border-slate-200 outline-none">
-                        <div class="text-[10px] text-slate-500 leading-tight">
-                            Kayıt olarak <a href="#" class="underline">Gizlilik Politikası</a> ve <a href="#" class="underline">Kullanım Şartları</a>'nı kabul etmiş sayılırsınız.
-                        </div>
+                <div id="reg-box" class="hidden">
+                    <h2 class="text-3xl font-black mb-6">Aramıza Katıl</h2>
+                    <form id="reg-form" class="space-y-4">
+                        <input type="text" id="r-name" placeholder="Ad Soyad" required class="w-full p-4 rounded-xl border">
+                        <input type="email" id="r-email" placeholder="E-posta" required class="w-full p-4 rounded-xl border">
+                        <input type="password" id="r-password" placeholder="Şifre" required class="w-full p-4 rounded-xl border">
                         <button type="submit" class="w-full btn-modern p-4 rounded-xl font-bold">Kayıt Ol</button>
                     </form>
-                    <p class="mt-4 text-center text-sm">Zaten üyen misin? <button onclick="toggleAuthBox()" class="text-emerald-600 font-bold">Giriş Yap</button></p>
+                    <p class="mt-4 text-center text-sm">Zaten üye misin? <button onclick="toggleAuth()" class="text-emerald-600 font-bold">Giriş Yap</button></p>
                 </div>
             </div>
         </div>
-
     </main>
-
-    <footer class="bg-white border-t mt-32 py-20">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
-            <div class="col-span-2 space-y-4">
-                <span class="text-2xl font-black">MATOTA<span class="text-emerald-500 font-light">|</span>BLOG</span>
-                <p class="text-slate-500 max-w-xs">Matematiği sevdiren, mantığı öğreten yeni nesil eğitim bloğu.</p>
-            </div>
-            <div class="space-y-4">
-                <h4 class="font-bold">Kurumsal</h4>
-                <div class="flex flex-col gap-2 text-slate-500 text-sm">
-                    <a href="#">Aydınlatma Metni</a>
-                    <a href="#">Gizlilik Sözleşmesi</a>
-                    <a href="#">Çerez Politikası</a>
-                </div>
-            </div>
-            <div class="space-y-4">
-                <h4 class="font-bold">Bağlantıda Kal</h4>
-                <div class="flex gap-4 text-emerald-600">
-                    <i class="fa-brands fa-instagram text-xl"></i>
-                    <i class="fa-brands fa-youtube text-xl"></i>
-                </div>
-            </div>
-        </div>
-    </footer>
 
     <script>
         const SB_URL = 'https://eygvzptaynyysagvgwyh.supabase.co'; 
         const SB_KEY = 'sb_publishable_JixS3C4jQ2Znrgcr3-IZPg_1MfpvdXW';
-        const supabaseClient = window.supabase.createClient(SB_URL, SB_KEY);
+        const sc = window.supabase.createClient(SB_URL, SB_KEY);
 
         let user = null;
-        let allPosts = [];
-        let allFiles = [];
+        let currentPostId = null;
 
         async function init() {
-            const { data: { session } } = await supabaseClient.auth.getSession();
+            const { data: { session } } = await sc.auth.getSession();
             user = session?.user || null;
             updateAuthUI();
-            checkCookies();
-            fetchData();
-        }
-
-        function checkCookies() {
-            if(!localStorage.getItem('cookies-accepted')) {
-                setTimeout(() => document.getElementById('cookie-banner').classList.remove('translate-y-full'), 2000);
-            }
-        }
-
-        function acceptCookies() {
-            localStorage.setItem('cookies-accepted', 'true');
-            document.getElementById('cookie-banner').classList.add('translate-y-full');
+            fetchContent();
         }
 
         function updateAuthUI() {
-            const authUi = document.getElementById('auth-ui');
-            if (user) {
-                authUi.innerHTML = `
-                    <div class="flex items-center gap-4">
-                        <span class="text-sm font-bold text-slate-700">${user.user_metadata.full_name || 'Kullanıcı'}</span>
-                        <button onclick="signOut()" class="text-red-500 text-sm font-bold">Çıkış</button>
-                    </div>
-                `;
+            const ui = document.getElementById('auth-ui');
+            if(user) {
+                ui.innerHTML = `<span class="text-sm font-bold text-emerald-700">${user.user_metadata.full_name}</span>
+                               <button onclick="logout()" class="text-red-500 text-xs font-bold px-2 py-1 bg-red-50 rounded-lg">Çıkış</button>`;
             } else {
-                authUi.innerHTML = `<button onclick="showPage('login')" class="px-5 py-2 rounded-full font-bold border border-emerald-500 text-emerald-600 hover:bg-emerald-50 transition">Giriş</button>`;
+                ui.innerHTML = `<button onclick="showPage('login')" class="px-6 py-2 rounded-full font-bold border border-emerald-500 text-emerald-600">Giriş</button>`;
             }
         }
 
-        async function signOut() {
-            await supabaseClient.auth.signOut();
-            user = null;
-            updateAuthUI();
-            showPage('home');
+        async function logout() { await sc.auth.signOut(); location.reload(); }
+
+        function showPage(p) {
+            ['home','blogs','files','login','post-detail'].forEach(id => document.getElementById('page-'+id).classList.add('hidden'));
+            document.getElementById('page-'+p).classList.remove('hidden');
+            window.scrollTo(0,0);
         }
 
-        function showPage(pageId) {
-            const pages = ['home', 'blogs', 'files', 'login', 'post-detail'];
-            pages.forEach(p => document.getElementById(`page-${p}`).classList.add('hidden'));
-            document.getElementById(`page-${pageId}`).classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function toggleAuthBox() {
+        function toggleAuth() {
             document.getElementById('login-box').classList.toggle('hidden');
-            document.getElementById('register-box').classList.toggle('hidden');
+            document.getElementById('reg-box').classList.toggle('hidden');
         }
 
-        async function fetchData() {
-            const { data: posts } = await supabaseClient.from('posts').select('*').order('created_at', { ascending: false });
-            const { data: files } = await supabaseClient.from('files').select('*').order('created_at', { ascending: false });
-            
-            allPosts = posts || [];
-            allFiles = files || [];
-            
-            renderPosts();
-            renderFiles();
+        async function fetchContent() {
+            const { data: posts } = await sc.from('posts').select('*').order('created_at', { ascending: false });
+            const { data: files } = await sc.from('files').select('*').order('created_at', { ascending: false });
+            renderPosts(posts || []);
+            renderFiles(files || []);
         }
 
-        function renderPosts() {
-            const grid = document.getElementById('posts-grid');
-            const latestGrid = document.getElementById('latest-posts');
-
-            const postHtml = (post) => `
-                <div class="glass p-6 rounded-[2rem] post-card transition-all cursor-pointer flex flex-col h-full" onclick="viewPost('${post.id}')">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="px-3 py-1 bg-emerald-100 text-emerald-600 rounded-lg text-[10px] font-black uppercase tracking-tighter">Matematik</span>
-                        <button onclick="toggleSave(event, '${post.id}')" class="text-slate-300 hover:text-red-500"><i class="fa-solid fa-bookmark"></i></button>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3 leading-tight">${post.title}</h3>
-                    <p class="text-slate-500 text-sm line-clamp-3 mb-6 flex-grow">${post.content}</p>
-                    <div class="flex items-center justify-between pt-4 border-t">
-                        <span class="text-xs text-slate-400 font-bold">${new Date(post.created_at).toLocaleDateString('tr-TR')}</span>
-                        <div class="flex gap-3 text-slate-300">
-                             <i class="fa-solid fa-heart mr-1"></i> ${post.likes_count || 0}
+        function renderPosts(posts) {
+            const html = posts.map(p => `
+                <div class="glass p-8 rounded-[2.5rem] hover:-translate-y-2 transition cursor-pointer flex flex-col h-full shadow-sm" onclick="viewPost('${p.id}')">
+                    <h3 class="text-2xl font-bold mb-4 leading-tight">${p.title}</h3>
+                    <p class="text-slate-500 text-sm line-clamp-3 mb-8 flex-grow">${p.content.replace(/[#*]/g, '')}</p>
+                    <div class="flex items-center justify-between text-xs font-bold text-emerald-600 bg-emerald-50 p-3 rounded-2xl">
+                        <span>${new Date(p.created_at).toLocaleDateString('tr-TR')}</span>
+                        <div class="flex gap-3">
+                            <span><i class="fa-solid fa-heart mr-1"></i> ${p.likes_count || 0}</span>
+                            <span><i class="fa-solid fa-comment mr-1"></i> ${p.comments_count || 0}</span>
                         </div>
                     </div>
                 </div>
-            `;
-
-            grid.innerHTML = allPosts.map(postHtml).join('');
-            latestGrid.innerHTML = allPosts.slice(0, 3).map(postHtml).join('');
+            `).join('');
+            document.getElementById('posts-grid').innerHTML = html;
+            document.getElementById('latest-posts').innerHTML = html.slice(0,3);
         }
 
-        function renderFiles() {
-            const list = document.getElementById('files-list');
-            if (allFiles.length === 0) {
-                list.innerHTML = `<p class="col-span-full text-center text-slate-400">Henüz paylaşılmış dosya yok.</p>`;
-                return;
-            }
-            list.innerHTML = allFiles.map(file => `
-                <div class="glass p-6 rounded-2xl flex items-center justify-between group">
+        function renderFiles(files) {
+            document.getElementById('files-list').innerHTML = files.map(f => `
+                <div class="glass p-6 rounded-2xl flex items-center justify-between border">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 text-xl">
-                            <i class="fa-solid fa-file-pdf"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-slate-900">${file.name}</h4>
-                            <span class="text-xs text-slate-400 uppercase font-black tracking-widest">${file.file_type} • ${file.size || '1.2MB'}</span>
-                        </div>
+                        <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 text-xl"><i class="fa-solid fa-file-invoice"></i></div>
+                        <div><h4 class="font-bold">${f.name}</h4><span class="text-xs text-slate-400 uppercase font-black">${f.file_type} Belgesi</span></div>
                     </div>
-                    <a href="${file.url}" target="_blank" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-white transition">
-                        <i class="fa-solid fa-download"></i>
-                    </a>
+                    <a href="${f.url}" target="_blank" class="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center hover:bg-emerald-600 transition shadow-lg shadow-slate-200"><i class="fa-solid fa-download"></i></a>
                 </div>
             `).join('');
         }
 
         async function viewPost(id) {
-            const post = allPosts.find(p => p.id == id);
-            if (!post) return;
+            currentPostId = id;
+            const { data: post } = await sc.from('posts').select('*').eq('id', id).single();
+            const { data: liked } = user ? await sc.from('likes').select('*').eq('post_id', id).eq('user_id', user.id).single() : { data: null };
+
             showPage('post-detail');
-            document.getElementById('post-detail-content').innerHTML = `
-                <button onclick="showPage('blogs')" class="mb-8 font-bold text-emerald-600 flex items-center gap-2">
-                    <i class="fa-solid fa-arrow-left"></i> Yazılara Dön
-                </button>
-                <article class="bg-white p-12 rounded-[3rem] shadow-sm border border-slate-100">
-                    <header class="mb-12">
-                        <h1 class="text-5xl font-black text-slate-900 mb-6 leading-tight">${post.title}</h1>
-                        <div class="flex items-center gap-6 text-slate-400 font-bold text-sm">
-                            <span><i class="fa-solid fa-calendar mr-2"></i>${new Date(post.created_at).toLocaleDateString('tr-TR')}</span>
-                            <span><i class="fa-solid fa-user-ninja mr-2"></i>Admin</span>
-                        </div>
-                    </header>
-                    <div class="text-xl text-slate-700 leading-relaxed font-light whitespace-pre-wrap mb-12">
-                        ${post.content}
-                    </div>
-                    <div class="pt-12 border-t flex items-center gap-6">
-                        <button onclick="likePost('${post.id}')" class="flex items-center gap-2 px-8 py-3 rounded-2xl bg-slate-50 text-slate-900 font-bold hover:bg-emerald-500 hover:text-white transition">
-                            <i class="fa-solid fa-heart"></i> ${post.likes_count || 0}
-                        </button>
-                    </div>
-                </article>
+            
+            // MARKED ile HTML'e dönüştür ve Başlığı ekle
+            document.getElementById('post-render-area').innerHTML = `
+                <h1 class="gradient-text">${post.title}</h1>
+                ${marked.parse(post.content)}
             `;
+
+            document.getElementById('post-actions').innerHTML = `
+                <button onclick="toggleLike('${id}')" class="flex items-center gap-2 px-8 py-3 rounded-2xl font-black ${liked ? 'bg-red-500 text-white shadow-red-200' : 'bg-slate-100 text-slate-900'} transition shadow-lg">
+                    <i class="fa-solid fa-heart"></i> ${post.likes_count || 0} Beğeni
+                </button>
+            `;
+            fetchComments(id);
         }
 
-        // --- Auth Handlers ---
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const { data, error } = await supabaseClient.auth.signInWithPassword({
-                email: document.getElementById('login-email').value,
-                password: document.getElementById('login-password').value
-            });
-            if (error) alert("Hata: " + error.message);
-            else { user = data.user; updateAuthUI(); showPage('home'); }
-        });
+        async function fetchComments(id) {
+            const { data } = await sc.from('comments').select('*').eq('post_id', id).order('created_at', { ascending: true });
+            document.getElementById('comments-list').innerHTML = data?.length ? data.map(c => `
+                <div class="p-5 bg-slate-50 rounded-3xl border border-slate-100">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-black text-sm text-emerald-700 uppercase tracking-tighter">${c.user_name}</span>
+                        <span class="text-[10px] text-slate-400 font-bold">${new Date(c.created_at).toLocaleDateString('tr-TR')}</span>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">${c.text}</p>
+                </div>
+            `).join('') : '<p class="text-slate-400 italic text-center py-4">Henüz kimse yorum yapmamış. İlk yorumu sen yap!</p>';
+        }
 
-        document.getElementById('register-form').addEventListener('submit', async (e) => {
+        async function sendComment() {
+            if(!user) return alert("Yorum yapmak için giriş yapmalısın!");
+            const text = document.getElementById('comment-text').value.trim();
+            if(!text) return;
+            const { error } = await sc.from('comments').insert([{ post_id: currentPostId, user_id: user.id, user_name: user.user_metadata.full_name, text }]);
+            if(!error) { document.getElementById('comment-text').value = ''; fetchComments(currentPostId); }
+        }
+
+        async function toggleLike(id) {
+            if(!user) return alert("Beğenmek için giriş yapmalısın!");
+            const { data: existing } = await sc.from('likes').select('*').eq('post_id', id).eq('user_id', user.id).single();
+            if(existing) {
+                await sc.from('likes').delete().eq('id', existing.id);
+            } else {
+                await sc.from('likes').insert([{ post_id: id, user_id: user.id }]);
+            }
+            viewPost(id);
+        }
+
+        document.getElementById('login-form').onsubmit = async (e) => {
             e.preventDefault();
-            const { data, error } = await supabaseClient.auth.signUp({
-                email: document.getElementById('reg-email').value,
-                password: document.getElementById('reg-password').value,
-                options: { data: { full_name: document.getElementById('reg-name').value } }
-            });
-            if (error) alert("Hata: " + error.message);
-            else alert("Kayıt başarılı! Lütfen e-postanı onayla.");
-        });
+            const { data, error } = await sc.auth.signInWithPassword({ email: document.getElementById('l-email').value, password: document.getElementById('l-password').value });
+            if(error) alert("Hata: " + error.message); else location.reload();
+        }
+
+        document.getElementById('reg-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const { data, error } = await sc.auth.signUp({ email: document.getElementById('r-email').value, password: document.getElementById('r-password').value, options: { data: { full_name: document.getElementById('r-name').value } } });
+            if(error) alert("Hata: " + error.message); else alert("Kayıt başarılı! Giriş yapabilirsin.");
+        }
 
         init();
     </script>
