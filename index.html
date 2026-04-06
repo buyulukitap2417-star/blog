@@ -3,116 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MATOTA | Blog - Matematik & Mantık</title>
+    <title>MATOTA | Blog - Matematik Dünyası</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <!-- Görüntüleme Sorununu Çözen Markdown Kütüphanesi -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <style>
-        body { font-family: 'Space Grotesk', sans-serif; background: #f8fafc; color: #0f172a; scroll-behavior: smooth; }
-        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(16, 185, 129, 0.1); }
-        .gradient-text { background: linear-gradient(135deg, #059669, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .math-pattern { background-image: radial-gradient(#10b981 0.5px, transparent 0.5px); background-size: 24px 24px; }
-        .btn-modern { background: #10b981; color: white; transition: all 0.3s; box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.39); }
-        .btn-modern:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f0fdfa; color: #0f172a; scroll-behavior: smooth; }
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.4); }
+        .gradient-text { background: linear-gradient(135deg, #0d9488, #0ea5e9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .btn-aqua { background: linear-gradient(135deg, #14b8a6, #0ea5e9); color: white; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .btn-aqua:hover { transform: translateY(-3px); box-shadow: 0 12px 24px -8px rgba(20, 184, 166, 0.5); }
         
-        /* Markdown İçerik Stilleri */
-        #post-render-area h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem; }
-        #post-render-area h2 { font-size: 2rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; color: #059669; }
-        #post-render-area p { margin-bottom: 1.25rem; line-height: 1.8; }
-        #post-render-area ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem; }
-        #post-render-area li { margin-bottom: 0.5rem; }
-        #post-render-area strong { color: #064e3b; font-weight: 700; }
+        /* Blog Yazı Formatı Düzeltmeleri */
+        #post-render-area { line-height: 1.8; font-size: 1.125rem; }
+        #post-render-area p { margin-bottom: 1.75rem; display: block; }
+        #post-render-area h1, #post-render-area h2, #post-render-area h3 { font-weight: 800; color: #0f172a; margin-top: 2rem; margin-bottom: 1rem; line-height: 1.3; }
+        #post-render-area h1 { font-size: 2.5rem; }
+        #post-render-area h2 { font-size: 1.8rem; color: #0d9488; }
+        #post-render-area ul, #post-render-area ol { margin-bottom: 1.5rem; padding-left: 1.5rem; }
+        #post-render-area ul { list-style-type: disc; }
+        #post-render-area ol { list-style-type: decimal; }
+        #post-render-area li { margin-bottom: 0.75rem; }
+        #post-render-area strong { font-weight: 700; color: #134e4a; }
+        
+        .hero-blob { position: absolute; filter: blur(80px); z-index: -1; border-radius: 50%; opacity: 0.4; }
+        .nav-link { font-weight: 600; color: #475569; transition: color 0.3s; cursor: pointer; }
+        .nav-link:hover { color: #0d9488; }
     </style>
 </head>
-<body class="math-pattern">
+<body class="overflow-x-hidden min-h-screen flex flex-col">
 
-    <!-- Navbar -->
-    <nav class="sticky top-0 z-[100] glass border-b">
+    <div class="hero-blob bg-teal-300 w-96 h-96 -top-20 -left-20"></div>
+    <div class="hero-blob bg-sky-300 w-96 h-96 top-1/2 -right-20"></div>
+
+    <!-- Navigasyon -->
+    <nav class="sticky top-0 z-[100] glass border-b border-teal-100/50">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <div class="flex items-center gap-2 cursor-pointer" onclick="showPage('home')">
-                <span class="text-2xl font-black tracking-tighter uppercase">MATOTA<span class="text-emerald-500 font-light">|</span>BLOG</span>
+                <div class="w-10 h-10 bg-teal-500 rounded-xl flex items-center justify-center text-white shadow-lg rotate-3"><i class="fa-solid fa-shapes"></i></div>
+                <span class="text-2xl font-black tracking-tighter uppercase">MATOTA<span class="text-teal-500">|</span>BLOG</span>
             </div>
-            <div class="hidden md:flex items-center gap-8 font-semibold">
-                <button onclick="showPage('home')" class="hover:text-emerald-600 transition">Anasayfa</button>
-                <button onclick="showPage('blogs')" class="hover:text-emerald-600 transition">Yazılar</button>
-                <button onclick="showPage('files')" class="hover:text-emerald-600 transition">Dosyalar</button>
+            
+            <!-- Menü Ögeleri -->
+            <div class="hidden md:flex items-center gap-8">
+                <span onclick="showPage('home')" class="nav-link">Anasayfa</span>
+                <span onclick="showPage('blogs')" class="nav-link">Yazılar</span>
+                <span onclick="showPage('files')" class="nav-link">Dosyalar</span>
             </div>
-            <div id="auth-ui" class="flex items-center gap-3"></div>
+
+            <div id="auth-ui" class="flex items-center gap-4">
+                <!-- JS ile dolacak -->
+            </div>
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-6 py-12">
-        <div id="page-home" class="space-y-12">
-             <section class="flex flex-col md:flex-row items-center gap-12 py-12">
-                <div class="flex-1 space-y-8">
-                    <h1 class="text-6xl md:text-8xl font-black text-slate-900 leading-tight">Zihnini <br> <span class="gradient-text">Matematikle</span> <br> Eğit.</h1>
-                    <p class="text-xl text-slate-600">Her gün yeni bir mantık sorusu, her hafta yeni bir konu özeti.</p>
-                    <button onclick="showPage('blogs')" class="btn-modern px-8 py-4 rounded-2xl font-bold text-lg">Keşfetmeye Başla</button>
+    <main class="max-w-7xl mx-auto px-6 py-12 flex-grow w-full">
+        <!-- ANA SAYFA -->
+        <div id="page-home" class="space-y-24">
+            <section class="relative py-20 text-center md:text-left flex flex-col md:flex-row items-center gap-16">
+                <div class="flex-1 space-y-8 animate-in slide-in-from-left duration-700">
+                    <span class="px-4 py-1.5 rounded-full bg-teal-100 text-teal-700 text-xs font-bold uppercase tracking-widest">Geleceğin Matematik Platformu</span>
+                    <h1 class="text-6xl md:text-8xl font-black leading-tight text-slate-900">Mantığı <br><span class="gradient-text">Keşfet,</span> <br>Fark Yarat.</h1>
+                    <p class="text-xl text-slate-500 max-w-lg leading-relaxed">Ortaokul matematik dünyasına profesyonel bir bakış. En güncel konular, özetler ve sınav hazırlık kaynakları burada.</p>
+                    <div class="flex flex-wrap gap-4 justify-center md:justify-start">
+                        <button onclick="showPage('blogs')" class="btn-aqua px-8 py-4 rounded-2xl font-bold text-lg">Yazıları Keşfet</button>
+                        <button onclick="document.getElementById('newsletter').scrollIntoView({behavior:'smooth'})" class="px-8 py-4 rounded-2xl font-bold bg-white/50 border border-teal-100 hover:bg-white transition">Abone Ol</button>
+                    </div>
+                </div>
+                <div class="flex-1 relative animate-in zoom-in duration-1000">
+                    <div class="w-full aspect-square glass rounded-[4rem] shadow-2xl flex items-center justify-center text-[10rem]">
+                        <i class="fa-solid fa-calculator text-teal-500/10 absolute rotate-12"></i>
+                        <span class="gradient-text font-black">π</span>
+                    </div>
                 </div>
             </section>
-            <div id="latest-posts" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+
+            <section id="latest-posts-section">
+                <div class="flex items-center justify-between mb-12">
+                    <div>
+                        <h2 class="text-3xl font-black text-slate-900">Son Paylaşımlar</h2>
+                        <div class="w-20 h-1.5 bg-teal-500 rounded-full mt-2"></div>
+                    </div>
+                    <button onclick="showPage('blogs')" class="text-teal-600 font-bold hover:gap-2 transition-all flex items-center gap-1">Tümünü Gör <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+                <div id="latest-posts" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+            </section>
+
+            <!-- E-POSTA BÜLTENİ -->
+            <section id="newsletter" class="glass p-12 md:p-20 rounded-[3rem] text-center space-y-8 relative overflow-hidden border border-teal-100 shadow-xl">
+                <div class="absolute top-0 right-0 p-10 opacity-5 text-9xl"><i class="fa-solid fa-envelope-open-text"></i></div>
+                <div class="max-w-2xl mx-auto space-y-4">
+                    <h2 class="text-4xl font-black text-slate-900">Yeniliklerden Haberdar Ol</h2>
+                    <p class="text-slate-500">Yeni bir blog yazısı veya çalışma kağıdı eklendiğinde sana anında haber verelim. Hiçbir konuyu kaçırma!</p>
+                </div>
+                <form id="subscribe-form" class="max-w-md mx-auto flex flex-col md:flex-row gap-3">
+                    <input type="email" id="sub-email" placeholder="E-posta adresin..." required class="flex-grow p-4 rounded-2xl border border-teal-100 outline-none focus:ring-2 focus:ring-teal-500">
+                    <button type="submit" class="btn-aqua px-8 py-4 rounded-2xl font-bold whitespace-nowrap">Kayıt Ol</button>
+                </form>
+            </section>
         </div>
 
-        <div id="page-blogs" class="hidden">
-            <h2 class="text-4xl font-black mb-12 text-center">Tüm Paylaşımlar</h2>
+        <!-- BLOG ARŞİVİ -->
+        <div id="page-blogs" class="hidden space-y-12">
+            <div class="text-center space-y-4">
+                <h2 class="text-4xl font-black text-slate-900">Blog Arşivi</h2>
+                <p class="text-slate-500">Matematik serüvenine dair tüm içeriklerimiz.</p>
+            </div>
             <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
         </div>
 
-        <div id="page-files" class="hidden">
-             <h2 class="text-4xl font-black mb-12 text-center">Dosya Arşivi</h2>
+        <!-- DOSYALAR -->
+        <div id="page-files" class="hidden space-y-12">
+             <div class="text-center space-y-4">
+                <h2 class="text-4xl font-black text-slate-900">Eğitim Kaynakları</h2>
+                <p class="text-slate-500">Çalışma kağıtları, denemeler ve yardımcı PDF dökümanları.</p>
+             </div>
              <div id="files-list" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
         </div>
 
+        <!-- YAZI DETAY -->
         <div id="page-post-detail" class="hidden max-w-4xl mx-auto">
-            <button onclick="showPage('blogs')" class="mb-8 font-bold text-emerald-600 flex items-center gap-2"><i class="fa-solid fa-arrow-left"></i> Yazılara Dön</button>
-            <article class="bg-white p-8 md:p-16 rounded-[3rem] border shadow-sm">
-                <!-- Render Area -->
-                <div id="post-render-area" class="text-lg text-slate-700 leading-relaxed"></div>
-                
-                <div class="flex gap-4 pt-12 mt-12 border-t" id="post-actions"></div>
+            <button onclick="showPage('blogs')" class="mb-10 font-bold text-teal-600 flex items-center gap-2 hover:-translate-x-2 transition"><i class="fa-solid fa-arrow-left"></i> Yazılara Dön</button>
+            <article class="bg-white p-8 md:p-16 rounded-[3rem] shadow-xl border border-teal-50">
+                <div id="post-render-area" class="text-slate-700"></div>
+                <div class="mt-12 pt-12 border-t flex gap-4" id="post-actions"></div>
             </article>
 
-            <div class="mt-12 glass p-8 rounded-[2.5rem] border shadow-sm">
-                <h3 class="text-2xl font-bold mb-6">Yorumlar</h3>
-                <div id="comments-list" class="space-y-4 mb-8"></div>
-                <div id="comment-form">
-                    <textarea id="comment-text" placeholder="Bu yazı hakkında ne düşünüyorsun?" class="w-full p-4 rounded-2xl border outline-none focus:ring-2 focus:ring-emerald-500 resize-none"></textarea>
-                    <button onclick="sendComment()" class="mt-4 btn-modern px-6 py-3 rounded-xl font-bold">Yorumunu Paylaş</button>
+            <!-- YORUMLAR -->
+            <div class="mt-12 glass p-10 rounded-[3rem] space-y-8 border border-teal-50">
+                <h3 class="text-2xl font-bold text-slate-900">Düşüncelerini Paylaş</h3>
+                <div id="comments-list" class="space-y-6"></div>
+                <div class="space-y-4 pt-6 border-t border-teal-100">
+                    <textarea id="comment-text" placeholder="Bu yazı hakkında ne düşünüyorsun?" class="w-full p-6 rounded-[2rem] border border-teal-100 outline-none focus:ring-2 focus:ring-teal-500 resize-none h-32 bg-white/50"></textarea>
+                    <button onclick="sendComment()" class="btn-aqua px-10 py-4 rounded-2xl font-bold">Yorum Yap</button>
                 </div>
             </div>
         </div>
 
-        <!-- Auth Pages (Login/Register) -->
+        <!-- GİRİŞ/KAYIT -->
         <div id="page-login" class="hidden max-w-md mx-auto py-12">
-            <div class="glass p-10 rounded-[2.5rem] shadow-xl space-y-8">
+            <div class="glass p-10 rounded-[2.5rem] shadow-xl space-y-8 border border-teal-100">
                 <div id="login-box">
-                    <h2 class="text-3xl font-black mb-6">Giriş Yap</h2>
+                    <h2 class="text-3xl font-black mb-6 text-slate-900">Tekrar Hoş Geldin</h2>
                     <form id="login-form" class="space-y-4">
-                        <input type="email" id="l-email" placeholder="E-posta" required class="w-full p-4 rounded-xl border">
-                        <input type="password" id="l-password" placeholder="Şifre" required class="w-full p-4 rounded-xl border">
-                        <button type="submit" class="w-full btn-modern p-4 rounded-xl font-bold">Devam Et</button>
+                        <input type="email" id="l-email" placeholder="E-posta" required class="w-full p-4 rounded-xl border border-teal-100 bg-white/50">
+                        <input type="password" id="l-password" placeholder="Şifre" required class="w-full p-4 rounded-xl border border-teal-100 bg-white/50">
+                        <button type="submit" class="w-full btn-aqua p-4 rounded-xl font-bold">Giriş Yap</button>
                     </form>
-                    <p class="mt-4 text-center text-sm">Hesabın yok mu? <button onclick="toggleAuth()" class="text-emerald-600 font-bold">Kayıt Ol</button></p>
+                    <p class="mt-4 text-center text-sm">Hesabın yok mu? <button onclick="toggleAuth()" class="text-teal-600 font-bold">Kayıt Ol</button></p>
                 </div>
                 <div id="reg-box" class="hidden">
-                    <h2 class="text-3xl font-black mb-6">Aramıza Katıl</h2>
+                    <h2 class="text-3xl font-black mb-6 text-slate-900">Aramıza Katıl</h2>
                     <form id="reg-form" class="space-y-4">
-                        <input type="text" id="r-name" placeholder="Ad Soyad" required class="w-full p-4 rounded-xl border">
-                        <input type="email" id="r-email" placeholder="E-posta" required class="w-full p-4 rounded-xl border">
-                        <input type="password" id="r-password" placeholder="Şifre" required class="w-full p-4 rounded-xl border">
-                        <button type="submit" class="w-full btn-modern p-4 rounded-xl font-bold">Kayıt Ol</button>
+                        <input type="text" id="r-name" placeholder="Ad Soyad" required class="w-full p-4 rounded-xl border border-teal-100 bg-white/50">
+                        <input type="email" id="r-email" placeholder="E-posta" required class="w-full p-4 rounded-xl border border-teal-100 bg-white/50">
+                        <input type="password" id="r-password" placeholder="Şifre" required class="w-full p-4 rounded-xl border border-teal-100 bg-white/50">
+                        <button type="submit" class="w-full btn-aqua p-4 rounded-xl font-bold">Kaydı Tamamla</button>
                     </form>
-                    <p class="mt-4 text-center text-sm">Zaten üye misin? <button onclick="toggleAuth()" class="text-emerald-600 font-bold">Giriş Yap</button></p>
+                    <p class="mt-4 text-center text-sm">Zaten üye misin? <button onclick="toggleAuth()" class="text-teal-600 font-bold">Giriş Yap</button></p>
                 </div>
             </div>
         </div>
     </main>
+
+    <!-- ALT BİLGİ (Footer) -->
+    <footer class="bg-white border-t border-teal-100 py-16 mt-24">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="col-span-1 md:col-span-2 space-y-6">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center text-white shadow-md"><i class="fa-solid fa-shapes text-xs"></i></div>
+                    <span class="text-xl font-black tracking-tighter uppercase">MATOTA<span class="text-teal-500">|</span>BLOG</span>
+                </div>
+                <p class="text-slate-500 max-w-sm">Ortaokul matematik eğitiminde yeni nesil, eğlenceli ve öğretici dijital kütüphane.</p>
+                <div class="flex gap-4 text-teal-600">
+                    <a href="#"><i class="fa-brands fa-instagram text-xl hover:scale-110 transition"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube text-xl hover:scale-110 transition"></i></a>
+                </div>
+            </div>
+            <div class="space-y-4">
+                <h4 class="font-bold text-slate-900">Hızlı Linkler</h4>
+                <div class="flex flex-col gap-2 text-slate-500 text-sm">
+                    <span onclick="showPage('home')" class="hover:text-teal-600 cursor-pointer">Anasayfa</span>
+                    <span onclick="showPage('blogs')" class="hover:text-teal-600 cursor-pointer">Yazılar</span>
+                    <span onclick="showPage('files')" class="hover:text-teal-600 cursor-pointer">Dosyalar</span>
+                </div>
+            </div>
+            <div class="space-y-4">
+                <h4 class="font-bold text-slate-900">Kurumsal</h4>
+                <div class="flex flex-col gap-2 text-slate-500 text-sm">
+                    <a href="#" class="hover:text-teal-600">Aydınlatma Metni</a>
+                    <a href="#" class="hover:text-teal-600">Gizlilik Sözleşmesi</a>
+                    <a href="#" class="hover:text-teal-600">Çerez Politikası</a>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 pt-12 mt-12 border-t border-teal-50 text-center text-slate-400 text-xs">
+            © 2024 MATOTA | Blog - Tüm Hakları Saklıdır.
+        </div>
+    </footer>
 
     <script>
         const SB_URL = 'https://eygvzptaynyysagvgwyh.supabase.co'; 
@@ -132,19 +224,25 @@
         function updateAuthUI() {
             const ui = document.getElementById('auth-ui');
             if(user) {
-                ui.innerHTML = `<span class="text-sm font-bold text-emerald-700">${user.user_metadata.full_name}</span>
-                               <button onclick="logout()" class="text-red-500 text-xs font-bold px-2 py-1 bg-red-50 rounded-lg">Çıkış</button>`;
+                ui.innerHTML = `<div class="flex items-center gap-3">
+                                    <span class="hidden sm:inline text-sm font-bold text-teal-700">${user.user_metadata.full_name}</span>
+                                    <button onclick="logout()" class="text-red-500 font-bold text-xs px-3 py-1.5 bg-red-50 rounded-xl hover:bg-red-100 transition">Çıkış Yap</button>
+                               </div>`;
             } else {
-                ui.innerHTML = `<button onclick="showPage('login')" class="px-6 py-2 rounded-full font-bold border border-emerald-500 text-emerald-600">Giriş</button>`;
+                ui.innerHTML = `<button onclick="showPage('login')" class="px-6 py-2.5 rounded-full font-bold border-2 border-teal-500 text-teal-600 hover:bg-teal-50 transition">Giriş Yap</button>`;
             }
         }
 
         async function logout() { await sc.auth.signOut(); location.reload(); }
 
         function showPage(p) {
-            ['home','blogs','files','login','post-detail'].forEach(id => document.getElementById('page-'+id).classList.add('hidden'));
-            document.getElementById('page-'+p).classList.remove('hidden');
-            window.scrollTo(0,0);
+            ['home','blogs','post-detail','files','login'].forEach(id => {
+                const el = document.getElementById('page-'+id);
+                if(el) el.classList.add('hidden');
+            });
+            const target = document.getElementById('page-'+p);
+            if(target) target.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function toggleAuth() {
@@ -160,33 +258,41 @@
         }
 
         function renderPosts(posts) {
+            const grid = document.getElementById('posts-grid');
+            const latestGrid = document.getElementById('latest-posts');
+            
             const html = posts.map(p => `
-                <div class="glass p-8 rounded-[2.5rem] hover:-translate-y-2 transition cursor-pointer flex flex-col h-full shadow-sm" onclick="viewPost('${p.id}')">
-                    <h3 class="text-2xl font-bold mb-4 leading-tight">${p.title}</h3>
-                    <p class="text-slate-500 text-sm line-clamp-3 mb-8 flex-grow">${p.content.replace(/[#*]/g, '')}</p>
-                    <div class="flex items-center justify-between text-xs font-bold text-emerald-600 bg-emerald-50 p-3 rounded-2xl">
+                <div class="glass p-8 rounded-[2.5rem] hover:-translate-y-3 transition-all duration-500 cursor-pointer flex flex-col h-full group shadow-sm border border-teal-50" onclick="viewPost('${p.id}')">
+                    <h3 class="text-2xl font-extrabold mb-4 group-hover:text-teal-600 transition leading-tight">${p.title}</h3>
+                    <p class="text-slate-500 text-sm line-clamp-3 mb-8 flex-grow leading-relaxed">${p.content.replace(/[#*]/g, '')}</p>
+                    <div class="flex items-center justify-between text-xs font-bold text-teal-700 bg-teal-50/50 p-4 rounded-2xl">
                         <span>${new Date(p.created_at).toLocaleDateString('tr-TR')}</span>
-                        <div class="flex gap-3">
+                        <div class="flex gap-4">
                             <span><i class="fa-solid fa-heart mr-1"></i> ${p.likes_count || 0}</span>
                             <span><i class="fa-solid fa-comment mr-1"></i> ${p.comments_count || 0}</span>
                         </div>
                     </div>
                 </div>
             `).join('');
-            document.getElementById('posts-grid').innerHTML = html;
-            document.getElementById('latest-posts').innerHTML = html.slice(0,3);
+            
+            grid.innerHTML = html || '<p class="col-span-full text-center text-slate-400">Henüz yazı bulunmuyor.</p>';
+            latestGrid.innerHTML = html.split('</div></div>').slice(0, 3).join('</div></div>') || '<p class="col-span-full text-center text-slate-400">Henüz yazı bulunmuyor.</p>';
         }
 
         function renderFiles(files) {
-            document.getElementById('files-list').innerHTML = files.map(f => `
-                <div class="glass p-6 rounded-2xl flex items-center justify-between border">
+            const list = document.getElementById('files-list');
+            list.innerHTML = files.map(f => `
+                <div class="glass p-6 rounded-3xl flex items-center justify-between border border-teal-50 group hover:border-teal-200 transition">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 text-xl"><i class="fa-solid fa-file-invoice"></i></div>
-                        <div><h4 class="font-bold">${f.name}</h4><span class="text-xs text-slate-400 uppercase font-black">${f.file_type} Belgesi</span></div>
+                        <div class="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center text-teal-600 text-xl"><i class="fa-solid fa-file-invoice"></i></div>
+                        <div>
+                            <h4 class="font-bold text-slate-900">${f.name}</h4>
+                            <span class="text-xs text-slate-400 uppercase font-black tracking-widest">${f.file_type} Belgesi</span>
+                        </div>
                     </div>
-                    <a href="${f.url}" target="_blank" class="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center hover:bg-emerald-600 transition shadow-lg shadow-slate-200"><i class="fa-solid fa-download"></i></a>
+                    <a href="${f.url}" target="_blank" class="w-11 h-11 rounded-full bg-slate-900 text-white flex items-center justify-center hover:bg-teal-600 transition shadow-lg"><i class="fa-solid fa-download text-sm"></i></a>
                 </div>
-            `).join('');
+            `).join('') || '<p class="col-span-full text-center text-slate-400 py-12">Henüz kaynak eklenmemiş.</p>';
         }
 
         async function viewPost(id) {
@@ -195,15 +301,13 @@
             const { data: liked } = user ? await sc.from('likes').select('*').eq('post_id', id).eq('user_id', user.id).single() : { data: null };
 
             showPage('post-detail');
-            
-            // MARKED ile HTML'e dönüştür ve Başlığı ekle
             document.getElementById('post-render-area').innerHTML = `
-                <h1 class="gradient-text">${post.title}</h1>
-                ${marked.parse(post.content)}
+                <h1 class="text-5xl font-black text-slate-900 mb-8 leading-tight">${post.title}</h1>
+                <div class="prose-custom">${marked.parse(post.content)}</div>
             `;
 
             document.getElementById('post-actions').innerHTML = `
-                <button onclick="toggleLike('${id}')" class="flex items-center gap-2 px-8 py-3 rounded-2xl font-black ${liked ? 'bg-red-500 text-white shadow-red-200' : 'bg-slate-100 text-slate-900'} transition shadow-lg">
+                <button onclick="toggleLike('${id}')" class="flex items-center gap-3 px-8 py-3 rounded-2xl font-black ${liked ? 'bg-red-500 text-white shadow-lg shadow-red-200' : 'bg-slate-100 text-slate-900'} transition">
                     <i class="fa-solid fa-heart"></i> ${post.likes_count || 0} Beğeni
                 </button>
             `;
@@ -213,14 +317,14 @@
         async function fetchComments(id) {
             const { data } = await sc.from('comments').select('*').eq('post_id', id).order('created_at', { ascending: true });
             document.getElementById('comments-list').innerHTML = data?.length ? data.map(c => `
-                <div class="p-5 bg-slate-50 rounded-3xl border border-slate-100">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="font-black text-sm text-emerald-700 uppercase tracking-tighter">${c.user_name}</span>
+                <div class="p-6 bg-teal-50/30 rounded-3xl border border-teal-100/50 shadow-sm">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="font-bold text-teal-800">${c.user_name}</span>
                         <span class="text-[10px] text-slate-400 font-bold">${new Date(c.created_at).toLocaleDateString('tr-TR')}</span>
                     </div>
                     <p class="text-slate-600 text-sm leading-relaxed">${c.text}</p>
                 </div>
-            `).join('') : '<p class="text-slate-400 italic text-center py-4">Henüz kimse yorum yapmamış. İlk yorumu sen yap!</p>';
+            `).join('') : '<p class="text-slate-400 italic text-center py-4">Henüz yorum yok. İlk yorumu sen yap!</p>';
         }
 
         async function sendComment() {
@@ -234,24 +338,29 @@
         async function toggleLike(id) {
             if(!user) return alert("Beğenmek için giriş yapmalısın!");
             const { data: existing } = await sc.from('likes').select('*').eq('post_id', id).eq('user_id', user.id).single();
-            if(existing) {
-                await sc.from('likes').delete().eq('id', existing.id);
-            } else {
-                await sc.from('likes').insert([{ post_id: id, user_id: user.id }]);
-            }
+            if(existing) await sc.from('likes').delete().eq('id', existing.id);
+            else await sc.from('likes').insert([{ post_id: id, user_id: user.id }]);
             viewPost(id);
         }
 
         document.getElementById('login-form').onsubmit = async (e) => {
             e.preventDefault();
-            const { data, error } = await sc.auth.signInWithPassword({ email: document.getElementById('l-email').value, password: document.getElementById('l-password').value });
+            const { error } = await sc.auth.signInWithPassword({ email: document.getElementById('l-email').value, password: document.getElementById('l-password').value });
             if(error) alert("Hata: " + error.message); else location.reload();
         }
 
         document.getElementById('reg-form').onsubmit = async (e) => {
             e.preventDefault();
-            const { data, error } = await sc.auth.signUp({ email: document.getElementById('r-email').value, password: document.getElementById('r-password').value, options: { data: { full_name: document.getElementById('r-name').value } } });
-            if(error) alert("Hata: " + error.message); else alert("Kayıt başarılı! Giriş yapabilirsin.");
+            const { error } = await sc.auth.signUp({ email: document.getElementById('r-email').value, password: document.getElementById('r-password').value, options: { data: { full_name: document.getElementById('r-name').value } } });
+            if(error) alert("Hata: " + error.message); else alert("Kayıt başarılı! Şimdi giriş yapabilirsin.");
+        }
+
+        document.getElementById('subscribe-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('sub-email').value;
+            const { error } = await sc.from('subscribers').insert([{ email }]);
+            if(error) alert("Zaten abonesiniz veya bir hata oluştu.");
+            else { alert("Harika! Artık tüm güncellemeler mailine gelecek."); e.target.reset(); }
         }
 
         init();
