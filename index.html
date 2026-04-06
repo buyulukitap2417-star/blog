@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matota Blog | Ortaokul Günlükleri</title>
+    
+    <!-- SEO Meta Etiketleri -->
+    <meta name="description" content="Matota Blog - Ortaokul öğrencileri için güvenli, eğlenceli ve etkileşimli günlük paylaşım platformu. Yazılarını paylaş, yorum yap ve keşfet!">
+    <meta name="keywords" content="blog, ortaokul blog, öğrenci günlüğü, matota, eğitim, çocuk blogları">
+    <meta name="author" content="Matota Online">
+    <link rel="canonical" href="https://blog.matota.online">
+
+    <!-- Tailwind CSS ve İkonlar -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .blog-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #4f46e5, #9333ea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .loader {
+            border-top-color: #4f46e5;
+            animation: spinner 0.6s linear infinite;
+        }
+
+        @keyframes spinner {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Navigasyon -->
+    <nav class="bg-white border-b sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="#" onclick="showPage('home')" class="text-2xl font-bold gradient-text">Matota Blog</a>
+            
+            <div class="flex items-center space-x-4">
+                <button onclick="showPage('home')" class="text-gray-600 hover:text-indigo-600 font-medium">Anasayfa</button>
+                <div id="auth-buttons" class="flex items-center space-x-3">
+                    <!-- Dinamik olarak dolacak -->
+                    <div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-6 w-6"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Ana İçerik Alanı -->
+    <main id="main-content" class="flex-grow max-w-5xl mx-auto w-full px-4 py-8">
+        <!-- Sayfalar buraya yüklenecek -->
+        <div id="page-home" class="space-y-8">
+            <div class="text-center py-12 bg-white rounded-3xl shadow-sm border px-6">
+                <h1 class="text-4xl font-extrabold text-gray-900 mb-4">Ortaokul Dünyasına Hoş Geldin! 🚀</h1>
+                <p class="text-gray-600 max-w-2xl mx-auto text-lg">Günlüklerini paylaş, arkadaşlarının yazdıklarını oku ve topluluğun bir parçası ol.</p>
+                <button id="create-post-btn" onclick="showPage('create-post')" class="mt-6 bg-indigo-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-indigo-700 transition">Hemen Yazmaya Başla</button>
+            </div>
+
+            <div id="posts-container" class="grid gap-6 md:grid-cols-2">
+                <!-- Blog yazıları buraya gelecek -->
+            </div>
+        </div>
+
+        <div id="page-login" class="hidden max-w-md mx-auto bg-white p-8 rounded-2xl shadow-sm border mt-10">
+            <h2 class="text-2xl font-bold mb-6 text-center">Giriş Yap</h2>
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">E-posta</label>
+                    <input type="email" id="login-email" required class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Şifre</label>
+                    <input type="password" id="login-password" required class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 text-white p-3 rounded-xl font-bold hover:bg-indigo-700">Giriş Yap</button>
+            </form>
+            <p class="mt-4 text-center text-gray-600">Hesabın yok mu? <a href="#" onclick="showPage('register')" class="text-indigo-600 font-semibold">Kayıt Ol</a></p>
+        </div>
+
+        <div id="page-register" class="hidden max-w-md mx-auto bg-white p-8 rounded-2xl shadow-sm border mt-10">
+            <h2 class="text-2xl font-bold mb-6 text-center">Hesap Oluştur</h2>
+            <form id="register-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Ad Soyad</label>
+                    <input type="text" id="register-name" required class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">E-posta</label>
+                    <input type="email" id="register-email" required class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Şifre</label>
+                    <input type="password" id="register-password" required class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 text-white p-3 rounded-xl font-bold hover:bg-indigo-700">Kayıt Ol</button>
+            </form>
+            <p class="mt-4 text-center text-gray-600">Zaten üye misin? <a href="#" onclick="showPage('login')" class="text-indigo-600 font-semibold">Giriş Yap</a></p>
+        </div>
+
+        <div id="page-create-post" class="hidden max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-sm border mt-10">
+            <h2 class="text-2xl font-bold mb-6">Yeni Blog Yazısı</h2>
+            <form id="post-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Başlık</label>
+                    <input type="text" id="post-title" required placeholder="Günün nasıl geçti?" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">İçerik</label>
+                    <textarea id="post-content" required rows="6" placeholder="Bir şeyler anlat..." class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
+                </div>
+                <div class="flex space-x-3">
+                    <button type="button" onclick="showPage('home')" class="flex-1 bg-gray-100 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-200">İptal</button>
+                    <button type="submit" class="flex-1 bg-indigo-600 text-white p-3 rounded-xl font-bold hover:bg-indigo-700">Paylaş</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="page-post-detail" class="hidden max-w-3xl mx-auto space-y-8 mt-6">
+            <!-- Dinamik Post Detayı -->
+        </div>
+    </main>
+
+    <footer class="bg-white border-t py-8 mt-12">
+        <div class="max-w-5xl mx-auto px-4 text-center text-gray-500">
+            <p>&copy; 2024 Matota Blog - Tüm Hakları Saklıdır.</p>
+            <p class="text-sm mt-1 text-indigo-500 font-medium">blog.matota.online</p>
+        </div>
+    </footer>
+
+    <!-- Firebase Kütüphaneleri -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, onSnapshot, query, setDoc, updateDoc, increment, arrayUnion, arrayRemove, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global Değişkenler
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'matota-blog-default';
+        
+        // Init Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+        let posts = [];
+
+        // UI Elementleri
+        const authButtons = document.getElementById('auth-buttons');
+        const postsContainer = document.getElementById('posts-container');
+
+        // Sayfa Değiştirme
+        window.showPage = (pageId) => {
+            document.querySelectorAll('#main-content > div').forEach(div => div.classList.add('hidden'));
+            document.getElementById(`page-${pageId}`).classList.remove('hidden');
+            window.scrollTo(0,0);
+        };
+
+        // Başlangıç Oturumu (Rule 3)
+        const init = async () => {
+            // Anonim giriş yap veya aktif kullanıcıyı bekle
+            onAuthStateChanged(auth, (user) => {
+                currentUser = user;
+                updateAuthUI();
+                fetchPosts();
+            });
+
+            // Eğer token varsa giriş yap, yoksa anonim dene (Rule 3)
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                // Burada genellikle environment login yapar, biz takip ederiz.
+            } else {
+                // Hiç kullanıcı yoksa anonim giriş denenebilir fakat biz üyelik sistemi kuruyoruz
+            }
+        };
+
+        // Auth UI Güncelleme
+        const updateAuthUI = () => {
+            if (currentUser && !currentUser.isAnonymous) {
+                authButtons.innerHTML = `
+                    <span class="text-sm hidden md:inline text-gray-500">Merhaba, <b>${currentUser.displayName || 'Yazar'}</b></span>
+                    <button id="logout-btn" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg text-sm font-bold border border-red-100">Çıkış</button>
+                `;
+                document.getElementById('logout-btn')?.addEventListener('click', () => signOut(auth));
+                document.getElementById('create-post-btn').classList.remove('hidden');
+            } else {
+                authButtons.innerHTML = `
+                    <button onclick="showPage('login')" class="text-indigo-600 font-bold px-4 py-2">Giriş</button>
+                    <button onclick="showPage('register')" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md shadow-indigo-100">Kayıt Ol</button>
+                `;
+                // Giriş yapmayanlar yazı yazamaz butonu gizleme (isteğe bağlı)
+            }
+        };
+
+        // Yazıları Getir
+        const fetchPosts = () => {
+            const postsRef = collection(db, 'artifacts', appId, 'public', 'data', 'posts');
+            onSnapshot(postsRef, (snapshot) => {
+                posts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                // Basit sıralama (Rule 2: JS tarafında sırala)
+                posts.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                renderPosts();
+            }, (error) => console.error("Veri çekme hatası:", error));
+        };
+
+        // Yazıları Ekrana Bas
+        const renderPosts = () => {
+            if (posts.length === 0) {
+                postsContainer.innerHTML = `<div class="col-span-full py-10 text-center text-gray-400">Henüz blog yazısı paylaşılmamış. İlk sen ol!</div>`;
+                return;
+            }
+
+            postsContainer.innerHTML = posts.map(post => `
+                <article onclick="viewPost('${post.id}')" class="blog-card bg-white p-6 rounded-2xl border shadow-sm cursor-pointer">
+                    <div class="flex items-center space-x-2 text-xs text-indigo-500 font-bold mb-3 uppercase tracking-wider">
+                        <span>${new Date(post.createdAt).toLocaleDateString('tr-TR')}</span>
+                        <span>•</span>
+                        <span>${post.authorName || 'Anonim'}</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">${post.title}</h3>
+                    <p class="text-gray-600 line-clamp-3 mb-4">${post.content}</p>
+                    <div class="flex items-center justify-between text-gray-400 text-sm">
+                        <div class="flex items-center space-x-4">
+                            <span><i class="fa-regular fa-heart mr-1"></i> ${post.likesCount || 0}</span>
+                            <span><i class="fa-regular fa-comment mr-1"></i> ${post.commentsCount || 0}</span>
+                        </div>
+                        <span class="text-indigo-600 font-semibold">Devamını Oku &rarr;</span>
+                    </div>
+                </article>
+            `).join('');
+        };
+
+        // Yazı Detayı Görüntüle
+        window.viewPost = async (postId) => {
+            const post = posts.find(p => p.id === postId);
+            if (!post) return;
+
+            const detailPage = document.getElementById('page-post-detail');
+            detailPage.classList.remove('hidden');
+            document.getElementById('page-home').classList.add('hidden');
+
+            detailPage.innerHTML = `
+                <div class="bg-white p-8 rounded-3xl border shadow-sm">
+                    <button onclick="showPage('home')" class="text-gray-500 mb-6 flex items-center hover:text-indigo-600">
+                        <i class="fa-solid fa-arrow-left mr-2"></i> Geri Dön
+                    </button>
+                    <div class="mb-6">
+                        <div class="text-indigo-600 font-bold text-sm mb-2 uppercase tracking-widest">${new Date(post.createdAt).toLocaleDateString('tr-TR')}</div>
+                        <h1 class="text-4xl font-extrabold text-gray-900">${post.title}</h1>
+                        <div class="mt-4 flex items-center space-x-3 text-gray-600">
+                            <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-bold">
+                                ${(post.authorName || 'A').charAt(0)}
+                            </div>
+                            <span class="font-medium">${post.authorName || 'Anonim'}</span>
+                        </div>
+                    </div>
+                    <div class="prose prose-indigo max-w-none text-gray-700 text-lg leading-relaxed whitespace-pre-wrap">
+                        ${post.content}
+                    </div>
+                    <div class="mt-10 pt-6 border-t flex items-center space-x-6">
+                        <button onclick="toggleLike('${post.id}')" id="like-btn-${post.id}" class="flex items-center space-x-2 text-xl font-bold ${post.likedBy?.includes(currentUser?.uid) ? 'text-red-500' : 'text-gray-400'} hover:scale-105 transition">
+                            <i class="fa-${post.likedBy?.includes(currentUser?.uid) ? 'solid' : 'regular'} fa-heart"></i>
+                            <span>${post.likesCount || 0} Beğeni</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-3xl border shadow-sm">
+                    <h3 class="text-xl font-bold mb-6">Yorumlar (${post.commentsCount || 0})</h3>
+                    <div class="space-y-4 mb-8" id="comments-list-${post.id}">
+                        <!-- Yorumlar yükleniyor... -->
+                    </div>
+                    ${currentUser && !currentUser.isAnonymous ? `
+                        <div class="flex items-start space-x-3">
+                            <div class="flex-grow">
+                                <textarea id="comment-input-${post.id}" placeholder="Bir yorum bırak..." class="w-full p-4 border rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none resize-none"></textarea>
+                                <button onclick="addComment('${post.id}')" class="mt-2 bg-indigo-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-indigo-700 transition">Gönder</button>
+                            </div>
+                        </div>
+                    ` : `
+                        <p class="text-center text-gray-500 text-sm">Yorum yapmak için lütfen <a href="#" onclick="showPage('login')" class="text-indigo-600 font-bold">giriş yapın</a>.</p>
+                    `}
+                </div>
+            `;
+            loadComments(postId);
+        };
+
+        // Yorumları Yükle
+        const loadComments = (postId) => {
+            const commentsRef = collection(db, 'artifacts', appId, 'public', 'data', 'comments');
+            // Rule 2: Fetch all and filter in JS
+            onSnapshot(commentsRef, (snapshot) => {
+                const comments = snapshot.docs
+                    .map(doc => doc.data())
+                    .filter(c => c.postId === postId)
+                    .sort((a, b) => b.createdAt - a.createdAt);
+
+                const container = document.getElementById(`comments-list-${postId}`);
+                if (!container) return;
+
+                if (comments.length === 0) {
+                    container.innerHTML = `<p class="text-gray-400 italic">Henüz yorum yok.</p>`;
+                } else {
+                    container.innerHTML = comments.map(c => `
+                        <div class="p-4 bg-gray-50 rounded-2xl">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="font-bold text-gray-900 text-sm">${c.authorName}</span>
+                                <span class="text-xs text-gray-400">${new Date(c.createdAt).toLocaleDateString('tr-TR')}</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">${c.text}</p>
+                        </div>
+                    `).join('');
+                }
+            });
+        };
+
+        // Beğeni At
+        window.toggleLike = async (postId) => {
+            if (!currentUser || currentUser.isAnonymous) {
+                showToast("Lütfen önce giriş yapın!");
+                return;
+            }
+
+            const postRef = doc(db, 'artifacts', appId, 'public', 'data', 'posts', postId);
+            const postDoc = await getDoc(postRef);
+            const postData = postDoc.data();
+            const hasLiked = postData.likedBy?.includes(currentUser.uid);
+
+            await updateDoc(postRef, {
+                likesCount: increment(hasLiked ? -1 : 1),
+                likedBy: hasLiked ? arrayRemove(currentUser.uid) : arrayUnion(currentUser.uid)
+            });
+            
+            // UI anlık güncellenecek (onSnapshot sayesinde)
+            const detailPageVisible = !document.getElementById('page-post-detail').classList.contains('hidden');
+            if(detailPageVisible) viewPost(postId);
+        };
+
+        // Yorum Ekle
+        window.addComment = async (postId) => {
+            const input = document.getElementById(`comment-input-${postId}`);
+            const text = input.value.trim();
+            if (!text) return;
+
+            const commentData = {
+                postId,
+                userId: currentUser.uid,
+                authorName: currentUser.displayName || 'İsimsiz Kullanıcı',
+                text,
+                createdAt: Date.now()
+            };
+
+            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'comments'), commentData);
+            await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'posts', postId), {
+                commentsCount: increment(1)
+            });
+
+            input.value = '';
+            showToast("Yorumun paylaşıldı!");
+        };
+
+        // Yeni Yazı Paylaş
+        document.getElementById('post-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('post-title').value;
+            const content = document.getElementById('post-content').value;
+
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'posts'), {
+                    title,
+                    content,
+                    authorId: currentUser.uid,
+                    authorName: currentUser.displayName,
+                    createdAt: Date.now(),
+                    likesCount: 0,
+                    commentsCount: 0,
+                    likedBy: []
+                });
+                showToast("Blog yazın başarıyla yayınlandı!");
+                e.target.reset();
+                showPage('home');
+            } catch (err) {
+                console.error(err);
+                showToast("Bir hata oluştu.");
+            }
+        });
+
+        // Kayıt Olma İşlemi
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const name = document.getElementById('register-name').value;
+
+            try {
+                const userCred = await createUserWithEmailAndPassword(auth, email, password);
+                // Auth profile update workaround (not directly via Auth API here easily, but we can set it in Firestore)
+                currentUser = userCred.user;
+                // Simulating display name update
+                currentUser.displayName = name; 
+                showToast(`Hoş geldin ${name}!`);
+                showPage('home');
+            } catch (err) {
+                showToast("Kayıt başarısız: " + err.message);
+            }
+        });
+
+        // Giriş Yapma İşlemi
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                showToast("Giriş başarılı!");
+                showPage('home');
+            } catch (err) {
+                showToast("Hatalı e-posta veya şifre.");
+            }
+        });
+
+        // Yardımcı Fonksiyon: Toast Mesajı
+        const showToast = (msg) => {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-5 right-5 bg-gray-900 text-white px-6 py-3 rounded-xl shadow-2xl z-50 transform transition-all duration-300 translate-y-20';
+            toast.innerText = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.classList.remove('translate-y-20'), 100);
+            setTimeout(() => {
+                toast.classList.add('translate-y-20');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        };
+
+        init();
+    </script>
+</body>
+</html>
