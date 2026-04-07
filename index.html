@@ -128,7 +128,6 @@
 
         <!-- Profile View -->
         <div id="view-profile" class="view hidden max-w-4xl mx-auto">
-            <!-- Profil içeriği aynı kalacak (Önceki stabil sürümlerden) -->
             <div class="glass p-12 rounded-[3.5rem] border border-teal-100 shadow-xl flex flex-col md:flex-row items-center gap-12 relative overflow-hidden">
                 <div class="relative group">
                     <div class="w-40 h-40 rounded-full border-[6px] border-white shadow-2xl overflow-hidden bg-white">
@@ -163,7 +162,6 @@
 
         <!-- Auth View -->
         <div id="view-login" class="view hidden max-w-md mx-auto py-12">
-            <!-- Giriş formu kodları -->
             <div class="glass p-12 rounded-[3.5rem] shadow-2xl border border-teal-100 text-center">
                 <h2 class="text-3xl font-black mb-8" id="auth-title">Giriş Yap</h2>
                 <form id="auth-form" class="space-y-4 text-left">
@@ -186,7 +184,40 @@
         </div>
     </main>
 
-    <!-- File Preview Modal -->
+    <!-- ALT BİLGİ (FOOTER) -->
+    <footer class="bg-white border-t border-teal-50 py-20 mt-20">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-16">
+            <div class="col-span-2 space-y-6">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center text-white"><i class="fa-solid fa-shapes text-xs"></i></div>
+                    <span class="text-xl font-black uppercase tracking-tighter">MATOTA<span class="text-teal-500">|</span>BLOG</span>
+                </div>
+                <p class="text-slate-500 max-w-xs leading-relaxed text-sm">Ortaokul matematik eğitiminde vizyoner içerikler ve kaynaklarla dolu dijital kütüphane.</p>
+                <div class="flex gap-4 text-teal-600">
+                    <a href="#" class="hover:scale-110 transition"><i class="fa-brands fa-instagram text-xl"></i></a>
+                    <a href="#" class="hover:scale-110 transition"><i class="fa-brands fa-youtube text-xl"></i></a>
+                </div>
+            </div>
+            <div class="space-y-4">
+                <h4 class="font-black text-xs uppercase tracking-widest text-slate-400">Hızlı Linkler</h4>
+                <div class="flex flex-col gap-3 text-sm font-bold text-slate-600">
+                    <span onclick="navigate('home')" class="hover:text-teal-600 cursor-pointer transition">Anasayfa</span>
+                    <span onclick="navigate('blogs')" class="hover:text-teal-600 cursor-pointer transition">Yazılar</span>
+                    <span onclick="navigate('files')" class="hover:text-teal-600 cursor-pointer transition">Dosyalar</span>
+                </div>
+            </div>
+            <div class="space-y-4">
+                <h4 class="font-black text-xs uppercase tracking-widest text-slate-400">Kurumsal</h4>
+                <div class="flex flex-col gap-3 text-sm font-bold text-slate-600">
+                    <a href="#" class="hover:text-teal-600 transition">Gizlilik Politikası</a>
+                    <a href="#" class="hover:text-teal-600 transition">Aydınlatma Metni</a>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 pt-12 mt-12 border-t border-teal-50 text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">© 2024 MATOTA | Tüm Hakları Saklıdır.</div>
+    </footer>
+
+    <!-- Modallar -->
     <div id="file-modal" class="hidden fixed inset-0 z-[2000] bg-slate-900/90 backdrop-blur-sm flex items-center justify-center p-4 md:p-10">
         <div class="w-full h-full max-w-6xl bg-white rounded-[3rem] shadow-2xl overflow-hidden flex flex-col border border-white/20 animate-in zoom-in duration-300">
             <div class="p-6 border-b flex justify-between items-center bg-white/50">
@@ -204,16 +235,13 @@
                     <button onclick="closeFileModal()" class="w-10 h-10 flex items-center justify-center bg-slate-100 text-slate-400 rounded-full hover:bg-red-50 hover:text-red-500 transition text-2xl font-light">&times;</button>
                 </div>
             </div>
-            <div id="modal-preview-body" class="flex-grow bg-slate-50 relative overflow-hidden">
-                <!-- Ön izleme içeriği -->
-            </div>
+            <div id="modal-preview-body" class="flex-grow bg-slate-50 relative overflow-hidden"></div>
             <div class="p-4 border-t text-center md:hidden">
                 <button id="modal-download-btn-mobile" class="w-full bg-teal-600 text-white p-4 rounded-2xl font-black">DOSYAYI İNDİR</button>
             </div>
         </div>
     </div>
 
-    <!-- Avatar Modal -->
     <div id="avatar-modal" class="hidden fixed inset-0 z-[2000] bg-slate-900/70 backdrop-blur-md flex items-center justify-center p-6">
         <div class="max-w-xl w-full bg-white p-10 rounded-[3.5rem] shadow-2xl space-y-8 animate-in zoom-in duration-200">
             <h2 class="text-3xl font-black text-center">Avatar Seç</h2>
@@ -233,7 +261,6 @@
         let authMode = 'login';
         let currentAvatar = 1;
 
-        // --- NAVIGATION ---
         function navigate(view, params = null) {
             document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
             const target = document.getElementById('view-' + view);
@@ -280,7 +307,6 @@
         }
 
         function renderHomeContent() {
-            // Son 3 Yazı
             const postsGrid = document.getElementById('latest-posts');
             postsGrid.innerHTML = allPosts.slice(0, 3).map(p => `
                 <div class="glass p-8 rounded-[2.5rem] hover:-translate-y-2 transition cursor-pointer flex flex-col h-full border border-teal-50 group" onclick="viewPost('${p.id}')">
@@ -296,7 +322,6 @@
                 </div>
             `).join('') || "<p class='col-span-full text-center text-slate-400'>İçerik bulunamadı.</p>";
 
-            // Son 3 Dosya
             const filesGrid = document.getElementById('latest-files');
             filesGrid.innerHTML = allFiles.slice(0, 3).map(f => `
                 <div class="glass p-8 rounded-[2.5rem] file-card border border-teal-50 cursor-pointer flex items-start gap-5" onclick="viewFile('${f.id}')">
@@ -349,7 +374,6 @@
             fetchComments(id);
         }
 
-        // --- FILES & CATEGORIES ---
         async function renderCategories() {
             document.getElementById('files-display').classList.add('hidden');
             document.getElementById('category-grid').classList.remove('hidden');
@@ -377,61 +401,34 @@
             `).join('') || "<p class='col-span-full py-12 text-center text-slate-400 italic'>Dosya bulunamadı.</p>";
         }
 
-        // --- FILE PREVIEW & DOWNLOAD ---
         function viewFile(id) {
             const file = allFiles.find(f => f.id === id);
             if(!file) return;
-
             const modal = document.getElementById('file-modal');
             const previewBody = document.getElementById('modal-preview-body');
             const downloadBtn = document.getElementById('modal-download-btn');
             const downloadBtnMob = document.getElementById('modal-download-btn-mobile');
-            
             document.getElementById('modal-file-name').innerText = file.name;
             document.getElementById('modal-file-info').innerText = `${file.file_type} • ${file.size}`;
-            
             const fileUrl = `${SB_URL}/storage/v1/object/public/files/${file.storage_path}`;
-            
-            // Site içi görüntüleme (PDF/Görsel kontrolü)
             if(file.file_type === 'PDF') {
                 previewBody.innerHTML = `<iframe src="${fileUrl}" class="w-full h-full border-none" title="PDF Preview"></iframe>`;
             } else if(['JPG', 'PNG', 'JPEG', 'WEBP'].includes(file.file_type)) {
                 previewBody.innerHTML = `<div class="w-full h-full flex items-center justify-center p-8"><img src="${fileUrl}" class="max-w-full max-h-full rounded-2xl shadow-xl"></div>`;
             } else {
-                previewBody.innerHTML = `<div class="w-full h-full flex flex-col items-center justify-center gap-4 text-slate-400"><i class="fa-solid fa-file-lines text-6xl"></i><p class="font-bold">Bu dosya tipi için önizleme yapılamıyor.</p></div>`;
+                previewBody.innerHTML = `<div class="w-full h-full flex flex-col items-center justify-center gap-4 text-slate-400"><i class="fa-solid fa-file-lines text-6xl"></i><p class="font-bold">Önizleme yapılamıyor.</p></div>`;
             }
-
-            // İndirme Fonksiyonu (Üye kontrolü)
             const handleDownload = () => {
-                if(!user) {
-                    alert("Dosya indirmek için siteye üye olmalı ve giriş yapmalısınız!");
-                    navigate('login');
-                    closeFileModal();
-                    return;
-                }
-                const link = document.createElement('a');
-                link.href = fileUrl;
-                link.download = file.name;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+                if(!user) { alert("İndirmek için giriş yapmalısınız!"); navigate('login'); closeFileModal(); return; }
+                const link = document.createElement('a'); link.href = fileUrl; link.download = file.name;
+                document.body.appendChild(link); link.click(); document.body.removeChild(link);
             };
-
-            downloadBtn.onclick = handleDownload;
-            downloadBtnMob.onclick = handleDownload;
-            downloadBtn.classList.remove('hidden');
-
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
+            downloadBtn.onclick = handleDownload; downloadBtnMob.onclick = handleDownload;
+            modal.classList.remove('hidden'); document.body.style.overflow = 'hidden';
         }
 
-        function closeFileModal() {
-            document.getElementById('file-modal').classList.add('hidden');
-            document.getElementById('modal-preview-body').innerHTML = "";
-            document.body.style.overflow = 'auto';
-        }
+        function closeFileModal() { document.getElementById('file-modal').classList.add('hidden'); document.body.style.overflow = 'auto'; }
 
-        // --- PROFILE & AVATAR ---
         async function loadProfile() {
             if(!user) return;
             const { data } = await sc.from('profiles').select('*').eq('id', user.id).single();
@@ -439,9 +436,8 @@
             const avatarUrl = `${SB_URL}/storage/v1/object/public/avatars/${currentAvatar}.png?t=${Date.now()}`;
             if(document.getElementById('prof-avatar')) document.getElementById('prof-avatar').src = avatarUrl;
             if(document.getElementById('nav-prof-img')) document.getElementById('nav-prof-img').src = avatarUrl;
-            
             document.getElementById('prof-name').innerText = data?.display_name || user.email.split('@')[0];
-            document.getElementById('prof-bio').innerText = data?.bio || "Biyografi henüz eklenmemiş.";
+            document.getElementById('prof-bio').innerText = data?.bio || "Biyografi yok.";
         }
 
         function openAvatarModal() {
@@ -468,7 +464,6 @@
 
         function toggleProfileEdit() { document.getElementById('prof-edit-area').classList.toggle('hidden'); }
 
-        // --- INTERACTION ---
         async function toggleLike(id) {
             if(!user) return navigate('login');
             const post = allPosts.find(p => p.id === id);
@@ -501,24 +496,9 @@
 
         async function fetchComments(id) {
             const { data } = await sc.from('comments').select('*').eq('post_id', id).order('created_at', { ascending: true });
-            document.getElementById('comments-list').innerHTML = data?.map(c => `
-                <div class="p-6 bg-teal-50/40 rounded-3xl border border-teal-100/10 flex justify-between items-start">
-                    <div><span class="font-black text-xs text-teal-800 uppercase tracking-tighter">${c.user_name}</span><p class="text-slate-600 text-sm mt-1">${c.text}</p></div>
-                    ${user && user.id === c.user_id ? `<button onclick="deleteComment('${c.id}', '${id}')" class="text-red-300 hover:text-red-500 transition px-2"><i class="fa-solid fa-trash-can text-xs"></i></button>` : ''}
-                </div>
-            `).join('') || "<p class='p-8 text-center text-slate-400 italic text-sm'>İlk yorumu sen yap!</p>";
+            document.getElementById('comments-list').innerHTML = data?.map(c => `<div class="p-6 bg-teal-50/40 rounded-3xl border border-teal-100/10 mb-4"><div><span class="font-black text-xs text-teal-800 uppercase">${c.user_name}</span><p class="text-slate-600 text-sm mt-1">${c.text}</p></div></div>`).join('') || "<p class='p-8 text-center text-slate-400 italic text-sm'>İlk yorumu sen yap!</p>";
         }
 
-        async function deleteComment(cId, pId) {
-            if(!confirm("Yorum silinsin mi?")) return;
-            await sc.from('comments').delete().eq('id', cId);
-            const post = allPosts.find(p => p.id === pId);
-            const newCount = Math.max(0, (post.comments_count || 0) - 1);
-            await sc.from('posts').update({ comments_count: newCount }).eq('id', pId);
-            post.comments_count = newCount; viewPost(pId);
-        }
-
-        // --- AUTH ---
         function updateAuthUI() {
             const ui = document.getElementById('auth-ui');
             if(user) {
@@ -542,10 +522,7 @@
             const name = document.getElementById('auth-name').value;
             if(authMode === 'register') {
                 const { data, error } = await sc.auth.signUp({ email, password, options: { data: { full_name: name } } });
-                if(error) alert(error.message); else { 
-                    await sc.from('profiles').insert([{ id: data.user.id, display_name: name, avatar_selection: 1 }]);
-                    alert("Kayıt başarılı!"); 
-                }
+                if(error) alert(error.message); else { await sc.from('profiles').insert([{ id: data.user.id, display_name: name, avatar_selection: 1 }]); alert("Kayıt başarılı!"); }
             } else {
                 const { error } = await sc.auth.signInWithPassword({ email, password });
                 if(error) alert("Hata: " + error.message); else location.reload();
