@@ -47,9 +47,9 @@
             </div>
             
             <div class="hidden md:flex items-center gap-8 font-bold text-slate-600">
-                <span onclick="navigate('home')" class="hover:text-teal-600 cursor-pointer">Anasayfa</span>
-                <span onclick="navigate('blogs')" class="hover:text-teal-600 cursor-pointer">Yazılar</span>
-                <span onclick="navigate('files')" class="hover:text-teal-600 cursor-pointer">Dosyalar</span>
+                <span onclick="navigate('home')" class="hover:text-teal-600 cursor-pointer transition">Anasayfa</span>
+                <span onclick="navigate('blogs')" class="hover:text-teal-600 cursor-pointer transition">Yazılar</span>
+                <span onclick="navigate('files')" class="hover:text-teal-600 cursor-pointer transition">Dosyalar</span>
             </div>
 
             <div id="auth-ui" class="flex items-center gap-3"></div>
@@ -99,14 +99,15 @@
             <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
         </div>
 
-        <!-- Post Detail View -->
-        <div id="view-post-detail" class="view hidden max-w-4xl mx-auto">
-            <button onclick="navigate('blogs')" class="mb-10 font-bold text-teal-600 flex items-center gap-2 hover:-translate-x-1 transition"><i class="fa-solid fa-arrow-left"></i> Geri Dön</button>
+        <!-- Post Detail / Legal View -->
+        <div id="view-post-detail" class="view hidden max-w-4xl mx-auto animate-in fade-in duration-500">
+            <button onclick="navigate('home')" class="mb-10 font-bold text-teal-600 flex items-center gap-2 hover:-translate-x-1 transition"><i class="fa-solid fa-arrow-left"></i> Anasayfaya Dön</button>
             <article class="bg-white p-8 md:p-16 rounded-[3.5rem] shadow-xl border border-teal-50">
                 <div id="post-render-area" class="post-content text-slate-700"></div>
                 <div class="mt-12 pt-12 border-t flex justify-between items-center" id="post-actions"></div>
             </article>
-            <div class="mt-12 glass p-10 rounded-[3rem] space-y-8">
+            
+            <div id="comment-section" class="mt-12 glass p-10 rounded-[3rem] space-y-8">
                 <h3 class="text-2xl font-black text-slate-900">Yorumlar (<span id="detail-comment-count">0</span>)</h3>
                 <div id="comments-list" class="space-y-6"></div>
                 <div class="pt-6 border-t border-teal-100 flex flex-col gap-4">
@@ -147,7 +148,7 @@
                     <div id="prof-edit-area" class="hidden space-y-4 pt-6 border-t border-teal-50 animate-in slide-in-from-top-2 duration-300">
                         <input type="text" id="edit-name" placeholder="Görünen İsim" class="w-full p-4 rounded-2xl border border-teal-100 outline-none focus:ring-4 focus:ring-teal-500/10">
                         <textarea id="edit-bio" placeholder="Kendinizden bahsedin..." class="w-full p-4 rounded-2xl border border-teal-100 outline-none h-28 focus:ring-4 focus:ring-teal-500/10 resize-none"></textarea>
-                        <button onclick="saveProfile()" class="btn-aqua px-8 py-3 rounded-2xl font-black">Güncelle</button>
+                        <button onclick="saveProfile()" class="btn-aqua px-8 py-3 rounded-2xl font-black shadow-lg">Güncelle</button>
                     </div>
                 </div>
             </div>
@@ -177,7 +178,7 @@
                         <label class="text-[10px] font-black text-slate-400 ml-2 uppercase tracking-widest">Şifre</label>
                         <input type="password" id="auth-password" required class="w-full p-4 rounded-2xl border border-teal-50 outline-none">
                     </div>
-                    <button type="submit" class="w-full btn-aqua p-5 rounded-[2rem] font-black shadow-xl mt-4">Devam Et</button>
+                    <button type="submit" class="w-full btn-aqua p-5 rounded-[2rem] font-black shadow-xl mt-4 tracking-widest">Devam Et</button>
                 </form>
                 <button onclick="toggleAuthMode()" id="auth-switch-btn" class="mt-6 text-teal-600 font-bold hover:underline">Kayıt Ol</button>
             </div>
@@ -189,13 +190,13 @@
         <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-16">
             <div class="col-span-2 space-y-6">
                 <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center text-white"><i class="fa-solid fa-shapes text-xs"></i></div>
+                    <div class="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center text-white shadow-sm"><i class="fa-solid fa-shapes text-xs"></i></div>
                     <span class="text-xl font-black uppercase tracking-tighter">MATOTA<span class="text-teal-500">|</span>BLOG</span>
                 </div>
                 <p class="text-slate-500 max-w-xs leading-relaxed text-sm">Ortaokul matematik eğitiminde vizyoner içerikler ve kaynaklarla dolu dijital kütüphane.</p>
                 <div class="flex gap-4 text-teal-600">
-                    <a href="#" class="hover:scale-110 transition"><i class="fa-brands fa-instagram text-xl"></i></a>
-                    <a href="#" class="hover:scale-110 transition"><i class="fa-brands fa-youtube text-xl"></i></a>
+                    <a href="#" class="hover:scale-125 transition duration-300"><i class="fa-brands fa-instagram text-xl"></i></a>
+                    <a href="#" class="hover:scale-125 transition duration-300"><i class="fa-brands fa-youtube text-xl"></i></a>
                 </div>
             </div>
             <div class="space-y-4">
@@ -209,8 +210,8 @@
             <div class="space-y-4">
                 <h4 class="font-black text-xs uppercase tracking-widest text-slate-400">Kurumsal</h4>
                 <div class="flex flex-col gap-3 text-sm font-bold text-slate-600">
-                    <a href="#" class="hover:text-teal-600 transition">Gizlilik Politikası</a>
-                    <a href="#" class="hover:text-teal-600 transition">Aydınlatma Metni</a>
+                    <span onclick="navigate('privacy')" class="hover:text-teal-600 cursor-pointer transition">Gizlilik Politikası</span>
+                    <span onclick="navigate('legal')" class="hover:text-teal-600 cursor-pointer transition">Aydınlatma Metni</span>
                 </div>
             </div>
         </div>
@@ -229,7 +230,7 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
-                    <button id="modal-download-btn" class="hidden md:flex items-center gap-2 bg-teal-50 text-teal-700 px-6 py-2.5 rounded-full font-black text-xs hover:bg-teal-100 transition">
+                    <button id="modal-download-btn" class="hidden md:flex items-center gap-2 bg-teal-50 text-teal-700 px-6 py-2.5 rounded-full font-black text-xs hover:bg-teal-100 transition shadow-sm">
                         <i class="fa-solid fa-cloud-arrow-down"></i> İNDİR
                     </button>
                     <button onclick="closeFileModal()" class="w-10 h-10 flex items-center justify-center bg-slate-100 text-slate-400 rounded-full hover:bg-red-50 hover:text-red-500 transition text-2xl font-light">&times;</button>
@@ -244,9 +245,9 @@
 
     <div id="avatar-modal" class="hidden fixed inset-0 z-[2000] bg-slate-900/70 backdrop-blur-md flex items-center justify-center p-6">
         <div class="max-w-xl w-full bg-white p-10 rounded-[3.5rem] shadow-2xl space-y-8 animate-in zoom-in duration-200">
-            <h2 class="text-3xl font-black text-center">Avatar Seç</h2>
+            <h2 class="text-3xl font-black text-center text-slate-900">Avatar Seç</h2>
             <div class="grid grid-cols-3 gap-6" id="avatar-list"></div>
-            <button onclick="closeAvatarModal()" class="w-full p-5 bg-slate-50 text-slate-400 rounded-3xl font-black">Kapat</button>
+            <button onclick="closeAvatarModal()" class="w-full p-5 bg-slate-50 text-slate-400 rounded-3xl font-black shadow-sm">Kapat</button>
         </div>
     </div>
 
@@ -261,6 +262,7 @@
         let authMode = 'login';
         let currentAvatar = 1;
 
+        // --- NAVIGATION ---
         function navigate(view, params = null) {
             document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
             const target = document.getElementById('view-' + view);
@@ -272,8 +274,16 @@
                 const post = allPosts.find(p => p.id === params);
                 if(post) title = post.title + " | MATOTA";
             }
+            
+            // Kurumsal Sayfalar İçin Başlık
+            if(view === 'privacy') title = "Gizlilik Politikası | MATOTA";
+            if(view === 'legal') title = "Aydınlatma Metni | MATOTA";
+
             document.getElementById('dynamic-title').innerText = title;
             window.location.hash = view + (params ? '/' + params : '');
+
+            // Kurumsal İçerik Yükle
+            if(view === 'privacy' || view === 'legal') loadLegalPage(view);
         }
 
         window.addEventListener('hashchange', () => {
@@ -295,6 +305,7 @@
             } else navigate('home');
         }
 
+        // --- FETCH DATA ---
         async function fetchAll() {
             const { data: postsData } = await sc.from('posts').select('*').order('created_at', { ascending: false });
             const { data: filesData } = await sc.from('files').select('*').order('created_at', { ascending: false });
@@ -306,10 +317,38 @@
             renderHomeContent();
         }
 
+        // Kurumsal Sayfayı Veritabanından Çek (post_type filtresi ile)
+        async function loadLegalPage(type) {
+            const area = document.getElementById('post-render-area');
+            const actions = document.getElementById('post-actions');
+            const comments = document.getElementById('comment-section');
+            
+            area.innerHTML = `<div class="flex justify-center py-20"><div class="loader"></div></div>`;
+            actions.innerHTML = "";
+            comments.classList.add('hidden'); // Kurumsal sayfalarda yorumları gizle
+            
+            const { data, error } = await sc.from('posts')
+                .select('*')
+                .eq('post_type', type)
+                .order('created_at', { ascending: false })
+                .limit(1)
+                .single();
+
+            if (data && !error) {
+                area.innerHTML = `<h1 class="text-5xl font-black text-slate-900 mb-8 leading-tight tracking-tighter">${data.title}</h1><div class="post-content">${marked.parse(data.content)}</div>`;
+            } else {
+                area.innerHTML = `<div class="text-center py-20 space-y-4"><i class="fa-solid fa-file-circle-exclamation text-slate-200 text-6xl"></i><p class="text-slate-400 font-bold">Bu sayfa henüz admin tarafından oluşturulmamış.</p></div>`;
+            }
+            document.getElementById('view-post-detail').classList.remove('hidden');
+        }
+
+        // --- RENDER FUNCTIONS ---
         function renderHomeContent() {
+            // Sadece normal blog yazılarını filtrele (son 3)
+            const blogPosts = allPosts.filter(p => !p.post_type || p.post_type === 'blog').slice(0, 3);
             const postsGrid = document.getElementById('latest-posts');
-            postsGrid.innerHTML = allPosts.slice(0, 3).map(p => `
-                <div class="glass p-8 rounded-[2.5rem] hover:-translate-y-2 transition cursor-pointer flex flex-col h-full border border-teal-50 group" onclick="viewPost('${p.id}')">
+            postsGrid.innerHTML = blogPosts.map(p => `
+                <div class="glass p-8 rounded-[2.5rem] hover:-translate-y-2 transition cursor-pointer flex flex-col h-full border border-teal-50 group shadow-sm" onclick="viewPost('${p.id}')">
                     <h3 class="text-2xl font-extrabold mb-4 group-hover:text-teal-600 transition leading-tight">${p.title}</h3>
                     <p class="text-slate-500 text-sm line-clamp-3 mb-10 flex-grow leading-relaxed">${p.content.replace(/[#*]/g, '')}</p>
                     <div class="flex items-center justify-between text-[10px] font-black text-teal-700 bg-teal-50/50 p-4 rounded-2xl uppercase">
@@ -324,8 +363,8 @@
 
             const filesGrid = document.getElementById('latest-files');
             filesGrid.innerHTML = allFiles.slice(0, 3).map(f => `
-                <div class="glass p-8 rounded-[2.5rem] file-card border border-teal-50 cursor-pointer flex items-start gap-5" onclick="viewFile('${f.id}')">
-                    <div class="w-14 h-14 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center text-2xl"><i class="fa-solid fa-file-pdf"></i></div>
+                <div class="glass p-8 rounded-[2.5rem] file-card border border-teal-50 cursor-pointer flex items-start gap-5 shadow-sm" onclick="viewFile('${f.id}')">
+                    <div class="w-14 h-14 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center text-2xl shadow-inner"><i class="fa-solid fa-file-pdf"></i></div>
                     <div class="flex-grow">
                         <h4 class="font-black text-slate-800 leading-tight">${f.name}</h4>
                         <div class="flex gap-3 text-[9px] font-black text-slate-400 uppercase tracking-widest mt-2">
@@ -339,22 +378,25 @@
         }
 
         function renderPosts() {
+            const blogPosts = allPosts.filter(p => !p.post_type || p.post_type === 'blog');
             const grid = document.getElementById('posts-grid');
-            grid.innerHTML = allPosts.map(p => `
-                <div class="glass p-8 rounded-[2.5rem] hover:-translate-y-2 transition cursor-pointer flex flex-col h-full border border-teal-50" onclick="viewPost('${p.id}')">
+            grid.innerHTML = blogPosts.map(p => `
+                <div class="glass p-8 rounded-[2.5rem] hover:-translate-y-2 transition cursor-pointer flex flex-col h-full border border-teal-50 shadow-sm" onclick="viewPost('${p.id}')">
                     <h3 class="text-2xl font-extrabold mb-4 leading-tight">${p.title}</h3>
                     <p class="text-slate-500 text-sm line-clamp-3 mb-10 flex-grow">${p.content.replace(/[#*]/g, '')}</p>
                     <div class="flex items-center justify-between text-[10px] font-black text-teal-700 bg-teal-50/50 p-4 rounded-2xl uppercase">
                         <span>${new Date(p.created_at).toLocaleDateString('tr-TR')}</span>
                     </div>
                 </div>
-            `).join('');
+            `).join('') || "<p class='col-span-full text-center text-slate-400 py-12'>Blog yazısı bulunamadı.</p>";
         }
 
         async function viewPost(id) {
             const post = allPosts.find(p => p.id === id);
             if(!post) return;
+            
             navigate('post-detail', id);
+            document.getElementById('comment-section').classList.remove('hidden'); // Bloglarda yorumları göster
             document.getElementById('detail-comment-count').innerText = post.comments_count || 0;
             document.getElementById('post-render-area').innerHTML = `<h1 class="text-5xl font-black text-slate-900 mb-8 leading-tight tracking-tighter">${post.title}</h1><div class="post-content">${marked.parse(post.content)}</div>`;
             
@@ -363,23 +405,24 @@
 
             document.getElementById('post-actions').innerHTML = `
                 <div class="flex gap-4">
-                    <button onclick="toggleLike('${id}')" class="flex items-center gap-3 px-8 py-3 rounded-2xl font-black ${liked ? 'bg-red-500 text-white' : 'bg-slate-50'} transition shadow-md">
+                    <button onclick="toggleLike('${id}')" class="flex items-center gap-3 px-8 py-3 rounded-2xl font-black ${liked ? 'bg-red-500 text-white shadow-lg shadow-red-200' : 'bg-slate-50'} transition hover:scale-105">
                         <i class="fa-solid fa-heart"></i> ${post.likes_count || 0}
                     </button>
-                    <button onclick="toggleSave('${id}')" class="flex items-center gap-3 px-8 py-3 rounded-2xl font-black ${saved ? 'bg-teal-600 text-white' : 'bg-slate-50'} transition shadow-md">
-                        <i class="fa-solid fa-bookmark"></i>
+                    <button onclick="toggleSave('${id}')" class="flex items-center gap-3 px-8 py-3 rounded-2xl font-black ${saved ? 'bg-teal-600 text-white shadow-lg shadow-teal-200' : 'bg-slate-50'} transition hover:scale-105">
+                        <i class="fa-solid fa-bookmark"></i> ${saved ? 'Kaydedildi' : 'Kaydet'}
                     </button>
                 </div>
             `;
             fetchComments(id);
         }
 
+        // --- FILES & CATEGORIES ---
         async function renderCategories() {
             document.getElementById('files-display').classList.add('hidden');
             document.getElementById('category-grid').classList.remove('hidden');
             const { data } = await sc.from('file_categories').select('*');
             document.getElementById('category-grid').innerHTML = data?.map(c => `
-                <div class="glass p-10 rounded-[3rem] border border-teal-50 hover:border-teal-400 transition cursor-pointer text-center group" onclick="viewCategoryFiles('${c.id}')">
+                <div class="glass p-10 rounded-[3rem] border border-teal-50 hover:border-teal-400 transition cursor-pointer text-center group shadow-sm" onclick="viewCategoryFiles('${c.id}')">
                     <div class="w-16 h-16 bg-teal-50 rounded-2xl flex items-center justify-center text-teal-600 mx-auto mb-6 text-3xl group-hover:scale-110 transition"><i class="fa-solid fa-folder-tree"></i></div>
                     <h4 class="font-black text-slate-800 tracking-tight">${c.name}</h4>
                 </div>
@@ -391,9 +434,9 @@
             document.getElementById('files-display').classList.remove('hidden');
             const { data } = await sc.from('files').select('*').eq('category_id', catId);
             document.getElementById('files-list').innerHTML = data?.map(f => `
-                <div class="glass p-6 rounded-[2rem] border border-teal-50 flex justify-between items-center group hover:bg-white transition" onclick="viewFile('${f.id}')">
+                <div class="glass p-6 rounded-[2rem] border border-teal-50 flex justify-between items-center group hover:bg-white transition shadow-sm" onclick="viewFile('${f.id}')">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-teal-50 text-teal-600 rounded-xl flex items-center justify-center text-xl"><i class="fa-solid fa-file-pdf"></i></div>
+                        <div class="w-12 h-12 bg-teal-50 text-teal-600 rounded-xl flex items-center justify-center text-xl shadow-inner"><i class="fa-solid fa-file-pdf"></i></div>
                         <div><h5 class="font-bold text-slate-900">${f.name}</h5><span class="text-[9px] text-slate-400 font-black uppercase">${f.file_type} • ${f.size}</span></div>
                     </div>
                     <i class="fa-solid fa-chevron-right text-teal-200 group-hover:text-teal-500 transition mr-2"></i>
@@ -429,6 +472,7 @@
 
         function closeFileModal() { document.getElementById('file-modal').classList.add('hidden'); document.body.style.overflow = 'auto'; }
 
+        // --- PROFILE & AVATAR ---
         async function loadProfile() {
             if(!user) return;
             const { data } = await sc.from('profiles').select('*').eq('id', user.id).single();
@@ -438,13 +482,15 @@
             if(document.getElementById('nav-prof-img')) document.getElementById('nav-prof-img').src = avatarUrl;
             document.getElementById('prof-name').innerText = data?.display_name || user.email.split('@')[0];
             document.getElementById('prof-bio').innerText = data?.bio || "Biyografi yok.";
+            document.getElementById('edit-name').value = data?.display_name || "";
+            document.getElementById('edit-bio').value = data?.bio || "";
         }
 
         function openAvatarModal() {
             document.getElementById('avatar-modal').classList.remove('hidden');
             document.getElementById('avatar-list').innerHTML = [1,2,3,4,5,6].map(n => `
                 <div class="avatar-option p-2 ${currentAvatar == n ? 'selected' : ''}" onclick="selectAvatar(${n})">
-                    <img src="${SB_URL}/storage/v1/object/public/avatars/${n}.png" class="w-full aspect-square rounded-2xl object-cover shadow-md">
+                    <img src="${SB_URL}/storage/v1/object/public/avatars/${n}.png" class="w-full aspect-square rounded-2xl object-cover shadow-md bg-white">
                 </div>
             `).join('');
         }
@@ -459,11 +505,33 @@
 
         async function saveProfile() {
             const { error } = await sc.from('profiles').upsert({ id: user.id, display_name: document.getElementById('edit-name').value, bio: document.getElementById('edit-bio').value });
-            if(!error) { alert("Güncellendi!"); await loadProfile(); toggleProfileEdit(); }
+            if(!error) { alert("Profil güncellendi!"); await loadProfile(); toggleProfileEdit(); }
         }
 
         function toggleProfileEdit() { document.getElementById('prof-edit-area').classList.toggle('hidden'); }
 
+        async function switchProfileTab(tab) {
+            document.querySelectorAll('.p-tab').forEach(b => {
+                b.classList.remove('border-b-4', 'border-teal-600', 'text-teal-800');
+                b.classList.add('text-slate-400');
+            });
+            event.target.classList.add('border-b-4', 'border-teal-600', 'text-teal-800');
+            event.target.classList.remove('text-slate-400');
+            const grid = document.getElementById('profile-items-grid');
+            grid.innerHTML = "<div class='col-span-full flex justify-center py-20'><div class='loader'></div></div>";
+
+            if(tab === 'saved') {
+                const { data } = await sc.from('saved_posts').select('post_id').eq('user_id', user.id);
+                const ids = data.map(d => d.post_id);
+                const posts = allPosts.filter(p => ids.includes(p.id));
+                grid.innerHTML = posts.map(p => `<div class="glass p-6 rounded-3xl border border-teal-50 cursor-pointer shadow-sm" onclick="viewPost('${p.id}')"><h4 class="font-black text-slate-800 line-clamp-1">${p.title}</h4></div>`).join('') || "<p class='col-span-full text-center py-10 text-slate-400'>Kaydedilmiş yazı yok.</p>";
+            } else {
+                const { data } = await sc.from('comments').select('*, posts(title)').eq('user_id', user.id);
+                grid.innerHTML = data.map(c => `<div class="glass p-6 rounded-3xl border border-teal-50 space-y-2 relative group shadow-sm"><div class="text-[9px] font-black text-teal-600 uppercase tracking-widest">${c.posts?.title || 'Yazı'}</div><p class="text-sm italic">"${c.text}"</p><button onclick="deleteComment('${c.id}', '${c.post_id}')" class="absolute top-4 right-4 text-red-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-trash-can"></i></button></div>`).join('') || "<p class='col-span-full text-center py-10 text-slate-400'>Yorum bulunmuyor.</p>";
+            }
+        }
+
+        // --- INTERACTION ---
         async function toggleLike(id) {
             if(!user) return navigate('login');
             const post = allPosts.find(p => p.id === id);
@@ -490,19 +558,31 @@
             const pId = window.location.hash.split('/')[1];
             await sc.from('comments').insert([{ post_id: pId, user_id: user.id, user_name: document.getElementById('prof-name').innerText, text }]);
             const post = allPosts.find(p => p.id === pId);
-            await sc.from('posts').update({ comments_count: (post.comments_count || 0) + 1 }).eq('id', pId);
-            post.comments_count += 1; document.getElementById('comment-text').value = ''; viewPost(pId);
+            const newCount = (post.comments_count || 0) + 1;
+            await sc.from('posts').update({ comments_count: newCount }).eq('id', pId);
+            post.comments_count = newCount; document.getElementById('comment-text').value = ''; viewPost(pId);
         }
 
         async function fetchComments(id) {
             const { data } = await sc.from('comments').select('*').eq('post_id', id).order('created_at', { ascending: true });
-            document.getElementById('comments-list').innerHTML = data?.map(c => `<div class="p-6 bg-teal-50/40 rounded-3xl border border-teal-100/10 mb-4"><div><span class="font-black text-xs text-teal-800 uppercase">${c.user_name}</span><p class="text-slate-600 text-sm mt-1">${c.text}</p></div></div>`).join('') || "<p class='p-8 text-center text-slate-400 italic text-sm'>İlk yorumu sen yap!</p>";
+            document.getElementById('comments-list').innerHTML = data?.map(c => `<div class="p-6 bg-teal-50/40 rounded-3xl border border-teal-100/10 mb-4 shadow-sm"><div><span class="font-black text-xs text-teal-800 uppercase tracking-tighter">${c.user_name}</span><p class="text-slate-600 text-sm mt-1 leading-relaxed">${c.text}</p></div></div>`).join('') || "<p class='p-8 text-center text-slate-400 italic text-sm'>İlk yorumu sen yap!</p>";
         }
 
+        async function deleteComment(cId, pId) {
+            if(!confirm("Yorum silinsin mi?")) return;
+            await sc.from('comments').delete().eq('id', cId);
+            const post = allPosts.find(p => p.id === pId);
+            const newCount = Math.max(0, (post.comments_count || 0) - 1);
+            await sc.from('posts').update({ comments_count: newCount }).eq('id', pId);
+            post.comments_count = newCount;
+            if(window.location.hash.includes('profile')) switchProfileTab('comments'); else viewPost(pId);
+        }
+
+        // --- AUTH ---
         function updateAuthUI() {
             const ui = document.getElementById('auth-ui');
             if(user) {
-                ui.innerHTML = `<div class="flex items-center gap-4"><button onclick="navigate('profile')" class="w-12 h-12 rounded-full border-2 border-teal-500 overflow-hidden shadow-lg hover:scale-105 transition bg-white"><img id="nav-prof-img" class="w-full h-full object-cover" src=""></button><button onclick="sc.auth.signOut().then(() => location.reload())" class="text-red-500 font-black text-[10px] uppercase bg-red-50 px-4 py-2 rounded-xl">Çıkış</button></div>`;
+                ui.innerHTML = `<div class="flex items-center gap-4"><button onclick="navigate('profile')" class="w-12 h-12 rounded-full border-2 border-teal-500 overflow-hidden shadow-lg hover:scale-105 transition bg-white"><img id="nav-prof-img" class="w-full h-full object-cover" src=""></button><button onclick="sc.auth.signOut().then(() => location.reload())" class="text-red-500 font-black text-[10px] uppercase bg-red-50 px-4 py-2 rounded-xl transition hover:bg-red-100">Çıkış</button></div>`;
             } else {
                 ui.innerHTML = `<button onclick="navigate('login')" class="px-8 py-3 rounded-full font-black border-2 border-teal-500 text-teal-600 hover:bg-teal-50 transition text-sm uppercase tracking-widest">Giriş Yap</button>`;
             }
@@ -522,7 +602,7 @@
             const name = document.getElementById('auth-name').value;
             if(authMode === 'register') {
                 const { data, error } = await sc.auth.signUp({ email, password, options: { data: { full_name: name } } });
-                if(error) alert(error.message); else { await sc.from('profiles').insert([{ id: data.user.id, display_name: name, avatar_selection: 1 }]); alert("Kayıt başarılı!"); }
+                if(error) alert(error.message); else { await sc.from('profiles').insert([{ id: data.user.id, display_name: name, avatar_selection: 1 }]); alert("Kayıt başarılı! Giriş yapabilirsin."); }
             } else {
                 const { error } = await sc.auth.signInWithPassword({ email, password });
                 if(error) alert("Hata: " + error.message); else location.reload();
